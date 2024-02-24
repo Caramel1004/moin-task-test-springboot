@@ -1,7 +1,8 @@
 package com.moin.remittance.domain.controller;
 
-import com.moin.remittance.domain.model.dto.member.MemberDTO;
+import com.moin.remittance.domain.dto.member.MemberDTO;
 
+import com.moin.remittance.presentation.MemberController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

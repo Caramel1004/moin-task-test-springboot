@@ -1,6 +1,5 @@
 package com.moin.remittance;
 
-import com.moin.remittance.domain.model.entity.member.MemberLogEntity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;

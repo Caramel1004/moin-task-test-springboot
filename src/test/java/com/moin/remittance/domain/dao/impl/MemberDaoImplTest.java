@@ -1,7 +1,7 @@
 package com.moin.remittance.domain.dao.impl;
 
-import com.moin.remittance.domain.repository.MemberRepository;
-import com.moin.remittance.domain.model.entity.member.MemberEntity;
+import com.moin.remittance.repository.MemberRepository;
+import com.moin.remittance.domain.entity.member.MemberEntity;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

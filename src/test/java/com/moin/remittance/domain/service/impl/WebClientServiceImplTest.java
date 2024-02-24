@@ -1,6 +1,7 @@
 package com.moin.remittance.domain.service.impl;
 
-import com.moin.remittance.domain.model.dto.remittance.ExchangeRateInfoDTO;
+import com.moin.remittance.application.service.component.impl.WebClientServiceImpl;
+import com.moin.remittance.domain.dto.remittance.ExchangeRateInfoDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
