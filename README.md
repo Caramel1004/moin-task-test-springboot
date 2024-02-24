@@ -28,11 +28,13 @@ overseas remittance
 > - 인증 토큰은 헤더에 담아서 요청
 > - 민감 정보는 모두 암호화 처리 후 저장: 회원 가입시 비밀번호, 주민등록번호 or 사업자번호 암호화 -> bcrypt 처리
 > - 소수점 연산 최대 자리수 12자리로 처리 -> java util 이용하여 처리
-- [회원가입](#회원가입 API)
-- [로그인](#로그인 API) => 인증 토큰 여부 o
-- [송금 견적서 요청](#송금 견적서 요청 API) => 인증 토큰 여부 o
-- [송금 접수 요청](#송금 접수 요청 API) => 인증 토큰 여부 o
-- [회원 거래 이력 요청](#회원 거래 이력 요청 API) => 인증 토큰 여부 o
+
+### *백엔드 API*
+>- 회원가입 API
+>- 로그인 API
+>- 송금 견적서 요청 API => Required Authorization
+>- 송금 접수 요청 API => Required Authorization
+>- 회원 거래 이력 요청 API => Required Authorization
 ### 1. 회원가입 API
 - #### EndPoint: /api/v1/user/signup
 - #### Method: POST
