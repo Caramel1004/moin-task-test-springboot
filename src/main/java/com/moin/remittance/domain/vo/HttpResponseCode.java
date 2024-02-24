@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum HttpResponseStatusVO {
+public enum HttpResponseCode {
 
     // 회원 관련 성공 상태 코드
     /* 2xx */
