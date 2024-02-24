@@ -10,6 +10,7 @@ public class HttpResponseDTO {
     private int code;
     private String message;
     private HttpResponseStatusVO codeName;
+
     public HttpResponseDTO (HttpResponseStatusVO result) {
         this.code = result.getCode();
         this.message = result.getMessage();
