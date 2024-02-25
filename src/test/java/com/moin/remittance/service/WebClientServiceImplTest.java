@@ -1,4 +1,4 @@
-package com.moin.remittance.domain.service.impl;
+package com.moin.remittance.service;
 
 import com.moin.remittance.application.service.component.impl.WebClientServiceImpl;
 import com.moin.remittance.domain.dto.remittance.ExchangeRateInfoDTO;

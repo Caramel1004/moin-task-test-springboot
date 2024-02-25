@@ -1,4 +1,4 @@
-package com.moin.remittance.domain.dao.impl;
+package com.moin.remittance.dao.impl;
 
 import com.moin.remittance.repository.MemberRepository;
 import com.moin.remittance.domain.entity.member.MemberEntity;

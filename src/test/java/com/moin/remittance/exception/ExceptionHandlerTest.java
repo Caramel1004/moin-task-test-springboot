@@ -1,4 +1,4 @@
-package com.moin.remittance.domain.exception;
+package com.moin.remittance.exception;
 
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
