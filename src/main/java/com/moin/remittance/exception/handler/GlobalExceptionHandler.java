@@ -1,5 +1,7 @@
 package com.moin.remittance.exception.handler;
 
+import com.moin.remittance.domain.dto.remittance.TransactionLogDTO;
+import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
 import com.moin.remittance.exception.dto.ErrorResponseDTO;
 import com.moin.remittance.exception.*;
 import org.springframework.http.HttpStatus;
@@ -10,27 +12,37 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 
-import static com.moin.remittance.domain.vo.HttpResponseStatusVO.BAD_REQUEST_BODY_INVALID_ERROR;
+import static com.moin.remittance.domain.vo.HttpResponseCode.*;
+
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NegativeNumberException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<HashMap<String, ErrorResponseDTO>> negativeNumberExceptionHandler(NegativeNumberException e) {
-        HashMap<String, ErrorResponseDTO> responseBody = new HashMap<String, ErrorResponseDTO>();
-        responseBody.put("result", new ErrorResponseDTO(e));
-        return ResponseEntity.status(e.getCode()).body(responseBody);
+    public ResponseEntity<HttpResponseBody> negativeNumberExceptionHandler(NegativeNumberException e) {
+        return ResponseEntity.status(e.getCode()).body(
+                HttpResponseBody.<TransactionLogDTO>builder()
+                        .statusCode(e.getCode())
+                        .message(e.getMessage())
+                        .codeName(e.getCodeName())
+                        .build()
+        );
     }
 
     @ExceptionHandler(ExternalAPIException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<HashMap<String, ErrorResponseDTO>> externalAPIExceptionHandler(ExternalAPIException e) {
-        HashMap<String, ErrorResponseDTO> responseBody = new HashMap<String, ErrorResponseDTO>();
-        responseBody.put("result", new ErrorResponseDTO(e));
-        return ResponseEntity.status(e.getCode()).body(responseBody);
+    public ResponseEntity<HttpResponseBody> externalAPIExceptionHandler(ExternalAPIException e) {
+        return ResponseEntity.status(e.getCode()).body(
+                HttpResponseBody.<TransactionLogDTO>builder()
+                        .statusCode(e.getCode())
+                        .message(e.getMessage())
+                        .codeName(e.getCodeName())
+                        .build()
+        );
     }
 
     @ExceptionHandler(NotExternalDataException.class)
