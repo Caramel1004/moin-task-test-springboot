@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-import static com.moin.remittance.domain.vo.HttpResponseStatusVO.*;
+import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 import static com.moin.remittance.util.ExchangeRateCalculator.*;
 
 @Service

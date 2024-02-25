@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.moin.remittance.domain.vo.HttpResponseStatusVO.INTERNAL_SERVER_ERROR_EXCHANGE_RATE_DATA;
+import static com.moin.remittance.domain.vo.HttpResponseCode.INTERNAL_SERVER_ERROR_EXCHANGE_RATE_DATA;
 
 @Service
 public class WebClientServiceImpl implements WebClientService {
