@@ -1,19 +1,19 @@
 package com.moin.remittance.exception;
 
-import com.moin.remittance.domain.vo.HttpResponseStatusVO;
+import com.moin.remittance.domain.vo.HttpResponseCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
 public class NegativeNumberException extends RuntimeException{
-    private HttpResponseStatusVO errorCode;
+    private String codeName;
     private int code;
     private String message;
 
-    public NegativeNumberException(HttpResponseStatusVO errorCode) {
-        this.code = errorCode.getCode();
+    public NegativeNumberException(HttpResponseCode errorCode) {
+        this.code = errorCode.getStatusCode();
         this.message = errorCode.getMessage();
-        this.errorCode = errorCode;
+        this.codeName = errorCode.getCodeName();
     }
 }
