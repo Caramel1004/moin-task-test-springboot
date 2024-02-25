@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.moin.remittance.domain.vo.HttpResponseStatusVO.*;
+import static com.moin.remittance.domain.vo.HttpResponseCode.*;
+
 
 @Service
 @RequiredArgsConstructor
