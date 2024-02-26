@@ -1,4 +1,4 @@
-# 프로젝트 명
+# 과제 테스트 컨셉
 overseas remittance
 
 # 운영 기업
@@ -11,7 +11,14 @@ overseas remittance
 - 유틸: JPA
 - 단위 테스트: junit
 - 빌드 환경: gradle
+- 작업 툴: intellij
 
+# 테스트 코드
+- 라이브러리:
+  - junit5
+  - mockito
+  - assertj<br><br>
+- <a href="https://github.com/Caramel1004/moin-task-test-springboot/tree/main/src/test/java/com/moin/remittance">테스트 코드 패키지로 이동</a>
 # 플랫폼 컨셉
 ### 주요 서비스
 - 해외 송금 서비스 제공(미국, 일본)
