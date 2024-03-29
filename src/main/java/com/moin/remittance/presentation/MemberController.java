@@ -1,9 +1,8 @@
 package com.moin.remittance.presentation;
 
-import com.moin.remittance.domain.dto.responsebody.HttpResponseDTO;
+import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
 import com.moin.remittance.domain.dto.member.MemberDTO;
 import com.moin.remittance.domain.dto.requestbody.MemberLoginRequestBodyDTO;
-import com.moin.remittance.domain.vo.HttpResponseStatusVO;
 import com.moin.remittance.application.service.component.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,40 +12,52 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
+import static com.moin.remittance.domain.vo.HttpResponseCode.SUCCESS_MEMBER_LOGIN;
+import static com.moin.remittance.domain.vo.HttpResponseCode.SUCCESS_MEMBER_SIGNUP;
+
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/user")
 public class MemberController {
+
     private final MemberService memberService;
 
     /*회원 가입
-    * @RequestBody properties
-    * userId: 유저 아이디(이메일 형식)
-    * password : 비밀번호
-    * name : 이름
-    * */
+     * @RequestBody properties
+     * userId: 유저 아이디(이메일 형식)
+     * password : 비밀번호
+     * name : 이름
+     * */
     @PostMapping(value = "/signup")
-    public ResponseEntity<HashMap<String, HttpResponseDTO>> signup(@RequestBody @Valid MemberDTO memberDTO) {
+    public ResponseEntity<HttpResponseBody> signup(@RequestBody @Valid MemberDTO memberDTO) {
+
         // 유저 추가
         memberService.saveUser(memberDTO);
 
-        // Response 처리
-        HashMap<String, HttpResponseDTO> responseBody = new HashMap<String, HttpResponseDTO>();
-        responseBody.put("result", new HttpResponseDTO(HttpResponseStatusVO.SUCCESS_MEMBER_SIGNUP));
-        return ResponseEntity.status(responseBody.get("result").getCode()).body(responseBody);
+        return ResponseEntity.status(SUCCESS_MEMBER_SIGNUP.getStatusCode()).body(
+                HttpResponseBody.builder()
+                        .statusCode(SUCCESS_MEMBER_SIGNUP.getStatusCode())
+                        .message(SUCCESS_MEMBER_SIGNUP.getMessage())
+                        .codeName(SUCCESS_MEMBER_SIGNUP.getCodeName())
+                        .build()
+        );
     }
 
     // 로그인
     @PostMapping(value = "/login")
-    public ResponseEntity<HashMap<String, Object>> login(@RequestBody @Valid MemberLoginRequestBodyDTO memberDTO) {
+    public ResponseEntity<HttpResponseBody> login(@RequestBody @Valid MemberLoginRequestBodyDTO memberDTO) {
 
         String token = memberService.getAuthToken(memberDTO.getUserId(), memberDTO.getPassword());
 
-        HashMap<String, Object> responseBody = new HashMap<String, Object>();
-        responseBody.put("result", new HttpResponseDTO(HttpResponseStatusVO.SUCCESS_MEMBER_LOGIN));
-        responseBody.put("token", token);
-        return ResponseEntity.status(HttpResponseStatusVO.SUCCESS_MEMBER_LOGIN.getCode()).body(responseBody);
+        return ResponseEntity.status(SUCCESS_MEMBER_LOGIN.getStatusCode()).body(
+                HttpResponseBody.<String>builder()
+                        .statusCode(SUCCESS_MEMBER_LOGIN.getStatusCode())
+                        .message(SUCCESS_MEMBER_LOGIN.getMessage())
+                        .codeName(SUCCESS_MEMBER_LOGIN.getCodeName())
+                        .token(token)
+                        .build()
+        );
     }
 
 }
