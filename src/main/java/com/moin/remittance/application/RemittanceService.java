@@ -1,4 +1,4 @@
-package com.moin.remittance.application.service.component;
+package com.moin.remittance.application;
 
 import com.moin.remittance.domain.dto.remittance.TransactionLogDTO;
 import com.moin.remittance.domain.dto.remittance.RemittanceQuoteResponseDTO;

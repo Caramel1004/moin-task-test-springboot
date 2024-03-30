@@ -1,11 +1,11 @@
-package com.moin.remittance.application.service.component.impl;
+package com.moin.remittance.application.impl;
 
 import com.moin.remittance.dao.MemberDAO;
 import com.moin.remittance.exception.DuplicateUserIdException;
 import com.moin.remittance.exception.InValidPatternTypeException;
 import com.moin.remittance.exception.NotFoundMemberException;
 import com.moin.remittance.domain.dto.member.MemberDTO;
-import com.moin.remittance.application.service.component.MemberService;
+import com.moin.remittance.application.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

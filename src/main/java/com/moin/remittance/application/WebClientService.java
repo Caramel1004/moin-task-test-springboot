@@ -1,4 +1,4 @@
-package com.moin.remittance.application.service.component;
+package com.moin.remittance.application;
 
 import com.moin.remittance.domain.dto.remittance.ExchangeRateInfoDTO;
 import org.springframework.stereotype.Service;

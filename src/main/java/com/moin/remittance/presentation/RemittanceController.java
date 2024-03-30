@@ -5,13 +5,11 @@ import com.moin.remittance.domain.dto.remittance.TransactionLogDTO;
 import com.moin.remittance.domain.dto.remittance.RemittanceQuoteResponseDTO;
 import com.moin.remittance.domain.dto.requestbody.RemittanceAcceptRequestBodyDTO;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
-import com.moin.remittance.application.service.component.RemittanceService;
+import com.moin.remittance.application.RemittanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 

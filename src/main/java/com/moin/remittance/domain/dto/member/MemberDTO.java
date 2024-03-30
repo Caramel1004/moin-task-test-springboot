@@ -1,9 +1,13 @@
 package com.moin.remittance.domain.dto.member;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
+@AllArgsConstructor
 public class MemberDTO {
     /*
     * @NotEmpty - null, ""을 허용하지 않는다. " "는 허용한다.

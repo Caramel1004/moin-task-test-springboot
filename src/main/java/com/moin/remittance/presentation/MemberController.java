@@ -3,14 +3,12 @@ package com.moin.remittance.presentation;
 import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
 import com.moin.remittance.domain.dto.member.MemberDTO;
 import com.moin.remittance.domain.dto.requestbody.MemberLoginRequestBodyDTO;
-import com.moin.remittance.application.service.component.MemberService;
+import com.moin.remittance.application.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 import static com.moin.remittance.domain.vo.HttpResponseCode.SUCCESS_MEMBER_LOGIN;
 import static com.moin.remittance.domain.vo.HttpResponseCode.SUCCESS_MEMBER_SIGNUP;

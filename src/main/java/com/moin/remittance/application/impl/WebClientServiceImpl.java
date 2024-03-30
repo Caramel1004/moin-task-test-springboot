@@ -1,8 +1,8 @@
-package com.moin.remittance.application.service.component.impl;
+package com.moin.remittance.application.impl;
 
 import com.moin.remittance.exception.NotExternalDataException;
 import com.moin.remittance.domain.dto.remittance.ExchangeRateInfoDTO;
-import com.moin.remittance.application.service.component.WebClientService;
+import com.moin.remittance.application.WebClientService;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;

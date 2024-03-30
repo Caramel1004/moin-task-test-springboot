@@ -1,6 +1,6 @@
-package com.moin.remittance.application.service.component.impl;
+package com.moin.remittance.application.impl;
 
-import com.moin.remittance.application.service.component.WebClientService;
+import com.moin.remittance.application.WebClientService;
 import com.moin.remittance.dao.MemberDAO;
 import com.moin.remittance.dao.RemittanceDAO;
 import com.moin.remittance.exception.AmountLimitExcessException;
@@ -10,7 +10,7 @@ import com.moin.remittance.exception.NegativeNumberException;
 import com.moin.remittance.domain.dto.remittance.*;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
 import com.moin.remittance.domain.entity.remittance.RemittanceQuoteEntity;
-import com.moin.remittance.application.service.component.RemittanceService;
+import com.moin.remittance.application.RemittanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
