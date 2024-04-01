@@ -1,14 +1,16 @@
-package com.moin.remittance.presentation;
+package com.moin.remittance.presentation.v2;
 
-import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
+import com.moin.remittance.application.service.v1.MemberServiceV1;
 import com.moin.remittance.domain.dto.member.MemberDTO;
 import com.moin.remittance.domain.dto.requestbody.MemberLoginRequestBodyDTO;
-import com.moin.remittance.application.MemberService;
+import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.moin.remittance.domain.vo.HttpResponseCode.SUCCESS_MEMBER_LOGIN;
 import static com.moin.remittance.domain.vo.HttpResponseCode.SUCCESS_MEMBER_SIGNUP;
@@ -16,10 +18,10 @@ import static com.moin.remittance.domain.vo.HttpResponseCode.SUCCESS_MEMBER_SIGN
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/v1/user")
-public class MemberController {
+@RequestMapping(value = "/api/v2/user")
+public class MemberControllerV2 {
 
-    private final MemberService memberService;
+    private final MemberServiceV1 memberService;
 
     /*회원 가입
      * @RequestBody properties
@@ -53,7 +55,7 @@ public class MemberController {
                         .statusCode(SUCCESS_MEMBER_LOGIN.getStatusCode())
                         .message(SUCCESS_MEMBER_LOGIN.getMessage())
                         .codeName(SUCCESS_MEMBER_LOGIN.getCodeName())
-                        .token(token)
+                        .data(token)
                         .build()
         );
     }

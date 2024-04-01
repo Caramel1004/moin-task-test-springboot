@@ -1,11 +1,12 @@
-package com.moin.remittance.presentation;
+package com.moin.remittance.presentation.v1;
 
 import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
 import com.moin.remittance.domain.dto.remittance.TransactionLogDTO;
 import com.moin.remittance.domain.dto.remittance.RemittanceQuoteResponseDTO;
 import com.moin.remittance.domain.dto.requestbody.RemittanceAcceptRequestBodyDTO;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
-import com.moin.remittance.application.RemittanceService;
+import com.moin.remittance.application.service.v1.RemittanceServiceV1;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +18,17 @@ import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/transfer")
-public class RemittanceController {
+public class RemittanceControllerV1 {
 
-    private final RemittanceService remittanceService;
+    private final RemittanceServiceV1 remittanceServiceV1;
 
     // 송금 견적서 호출
-    @GetMapping(value = "/quote")
+    @GetMapping("/quote")
     public ResponseEntity<HttpResponseBody> getRemittanceQuote(@RequestHeader("Authorization") HttpHeaders header,
-                                                                      RemittanceQuoteRequestParamsDTO requestParams) {
+                                                               @Valid RemittanceQuoteRequestParamsDTO requestParams) {
         String accessToken = header.getFirst("Authorization").split("Bearer ")[1];
         // 송금 견적서 조회
-        RemittanceQuoteResponseDTO remittanceQuoteDTO = remittanceService.getRemittanceQuote(requestParams);
+        RemittanceQuoteResponseDTO remittanceQuoteDTO = remittanceServiceV1.getRemittanceQuote(requestParams);
 
         // Response 처리
         return ResponseEntity.status(SUCCESS_GET_REMITTANCE_QUOTE.getStatusCode()).body(
@@ -35,7 +36,7 @@ public class RemittanceController {
                         .statusCode(SUCCESS_GET_REMITTANCE_QUOTE.getStatusCode())
                         .message(SUCCESS_GET_REMITTANCE_QUOTE.getMessage())
                         .codeName(SUCCESS_GET_REMITTANCE_QUOTE.getCodeName())
-                        .data(remittanceQuoteDTO)
+                        .data(remittanceServiceV1.getRemittanceQuote(requestParams))
                         .build()
         );
     }
@@ -43,9 +44,9 @@ public class RemittanceController {
     // 송금 접수 요청
     @PostMapping(value = "/request")
     public ResponseEntity<HttpResponseBody> requestRemittanceAccept(@RequestBody RemittanceAcceptRequestBodyDTO requestBody,
-                                                                               @RequestHeader("Authorization") HttpHeaders header) {
+                                                                    @RequestHeader("Authorization") HttpHeaders header) {
         // 송금 접수 요청
-        remittanceService.requestRemittanceAccept(requestBody.getQuoteId(), "test@test.com");
+        remittanceServiceV1.requestRemittanceAccept(requestBody.getQuoteId(), "test@test.com");
 
 
         // Response 처리
@@ -62,7 +63,7 @@ public class RemittanceController {
     public ResponseEntity<HttpResponseBody> getRemittanceLog(@RequestHeader("Authorization") HttpHeaders header) {
         String accessToken = header.getFirst("Authorization").split("Bearer ")[1];
         String userId = "test@test.com";
-        TransactionLogDTO log = remittanceService.getRemittanceLogList(userId);
+        TransactionLogDTO log = remittanceServiceV1.getRemittanceLogList(userId);
 
         // Response 처리
         return ResponseEntity.status(SUCCESS_GET_REMITTANCE_LOG.getStatusCode()).body(

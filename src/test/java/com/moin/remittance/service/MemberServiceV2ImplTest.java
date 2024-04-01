@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 
 @WebMvcTest
-public class MemberServiceImplTest {
+public class MemberServiceV2ImplTest {
 
     @Test
     @DisplayName("")

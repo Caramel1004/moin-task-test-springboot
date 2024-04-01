@@ -1,16 +1,17 @@
-package com.moin.remittance.application.impl;
+package com.moin.remittance.application.service.v1.impl;
 
-import com.moin.remittance.application.WebClientService;
+import com.moin.remittance.application.service.v1.RemittanceServiceV1;
+import com.moin.remittance.application.service.v1.WebClientService;
 import com.moin.remittance.dao.MemberDAO;
 import com.moin.remittance.dao.RemittanceDAO;
+import com.moin.remittance.domain.dto.remittance.*;
+import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
+import com.moin.remittance.domain.entity.remittance.RemittanceQuoteEntity;
 import com.moin.remittance.exception.AmountLimitExcessException;
 import com.moin.remittance.exception.ExpirationTimeOverException;
 import com.moin.remittance.exception.InValidPatternTypeException;
 import com.moin.remittance.exception.NegativeNumberException;
-import com.moin.remittance.domain.dto.remittance.*;
-import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
-import com.moin.remittance.domain.entity.remittance.RemittanceQuoteEntity;
-import com.moin.remittance.application.RemittanceService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +19,12 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 
-
 import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 import static com.moin.remittance.util.ExchangeRateCalculator.*;
 
 @Service
 @RequiredArgsConstructor
-public class RemittanceServiceImpl implements RemittanceService {
+public class RemittanceServiceImpl implements RemittanceServiceV1 {
 
     private final RemittanceDAO remittanceDAO;
 
@@ -32,12 +32,14 @@ public class RemittanceServiceImpl implements RemittanceService {
 
     private final WebClientService webClientService;
 
-    @Override
+
     /**
      * @param reqParamDTO 요청 쿼리 파라미터 DTO
      * @return RemittanceQuoteResponseDTO 송금 견적서 DTO
      * @throws NegativeNumberException 보내는 금액이 음수일 경우
      */
+    @Override
+    @Transactional
     public RemittanceQuoteResponseDTO getRemittanceQuote(RemittanceQuoteRequestParamsDTO reqParamDTO) {
 
         // 1. 보내는 금액 음의 정수: Error throw
@@ -46,7 +48,7 @@ public class RemittanceServiceImpl implements RemittanceService {
         }
 
         // 2. 외부API 호출로 환율 정보 응답 데이터 받기
-        HashMap<String, ExchangeRateInfoDTO> exchangeRateInfoHashMap = webClientService.getExchangeRateInfo(reqParamDTO.getCodes());// 환율 정보 DTO
+        HashMap<String, ExchangeRateInfoDTO> exchangeRateInfoHashMap = webClientService.fetchExchangeRateInfoFromExternalAPI(reqParamDTO.getCodes());// 환율 정보 DTO
 
         /* 3. 외부 API 환율 정보 요청
          * - 만료 기간 = 생성시간 + 10분
@@ -82,6 +84,7 @@ public class RemittanceServiceImpl implements RemittanceService {
     }
 
     @Override
+    @Transactional
     public void requestRemittanceAccept(long quoteId, String userId) {
 
         // 1. 유저아이디와 매칭된 송금 거래 이력에서 날짜가 오늘 날짜랑 일치하는 것만 조회해서 송금액 싹 더함
@@ -93,7 +96,7 @@ public class RemittanceServiceImpl implements RemittanceService {
             throw new InValidPatternTypeException(BAD_NOT_FOUND_ID_TYPE);
         }
 
-        double usdExchangeRate = webClientService.getExchangeRateInfo("FRX.KRWUSD").get("USD").getBasePrice();// 지금 현재 달러 환율 -> 외부 API
+        double usdExchangeRate = webClientService.fetchExchangeRateInfoFromExternalAPI("FRX.KRWUSD").get("USD").getBasePrice();// 지금 현재 달러 환율 -> 외부 API
         double usdSourceAmountNotToFee = calculateExchangeRate(sumOfsourceAmount, usdExchangeRate);// 수수료없는 순수 원화를 달러로 환산
 
         // 2. 유저의 보낸금액의 총합이 이미 한도액을 넘었는지 비교
@@ -131,6 +134,7 @@ public class RemittanceServiceImpl implements RemittanceService {
     }
 
     @Override
+    @Transactional
     public TransactionLogDTO getRemittanceLogList(String userId) {
         // 1. userId와 일치하는 송금 거래 이력 조회
         List<RemittanceHistoryDTO> log = remittanceDAO.findRemittanceLogListByUserId(userId);

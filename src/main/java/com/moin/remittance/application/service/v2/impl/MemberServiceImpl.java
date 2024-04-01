@@ -1,11 +1,11 @@
-package com.moin.remittance.application.impl;
+package com.moin.remittance.application.service.v2.impl;
 
 import com.moin.remittance.dao.MemberDAO;
 import com.moin.remittance.exception.DuplicateUserIdException;
 import com.moin.remittance.exception.InValidPatternTypeException;
 import com.moin.remittance.exception.NotFoundMemberException;
 import com.moin.remittance.domain.dto.member.MemberDTO;
-import com.moin.remittance.application.MemberService;
+import com.moin.remittance.application.service.v2.MemberServiceV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService {
+public class MemberServiceImpl implements MemberServiceV2 {
     private final MemberDAO memberDAO;
 
     @Value("${jwt.token.secret}")

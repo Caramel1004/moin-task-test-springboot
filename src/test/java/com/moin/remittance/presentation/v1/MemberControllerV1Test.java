@@ -1,9 +1,10 @@
-package com.moin.remittance.presentation;
+package com.moin.remittance.presentation.v1;
 
-import com.moin.remittance.application.MemberService;
+import com.moin.remittance.application.service.v1.MemberServiceV1;
 import com.moin.remittance.domain.dto.member.MemberDTO;
 import com.moin.remittance.domain.dto.requestbody.MemberLoginRequestBodyDTO;
 
+import com.moin.remittance.presentation.v1.MemberControllerV1;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,18 +29,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(MemberController.class) // 메인 컨트롤러와 테스트 컨트롤러 패키지 경로 맞추기
+@WebMvcTest(MemberControllerV1.class) // 메인 컨트롤러와 테스트 컨트롤러 패키지 경로 맞추기
 @AutoConfigureMockMvc // 이 어노테이션을 통해 MockMvc를 Builder 없이 주입받을 수 있음
 @AutoConfigureWebMvc
 @ExtendWith(MockitoExtension.class)
-public class MemberControllerTest {
+public class MemberControllerV1Test {
 
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private MemberService memberService;
+    private MemberServiceV1 memberServiceV1;
 
     @Test
     @DisplayName("회원 가입 테스트")
@@ -56,8 +57,8 @@ public class MemberControllerTest {
         System.out.println("member: " + member);
 
         //given : Mock 객체가 특정 상황에서 해야하는 행위를 정의하는 메소드
-        doNothing().when(mock(MemberService.class)).saveUser(isA(MemberDTO.class));
-        mock(MemberService.class).saveUser(member);
+        doNothing().when(mock(MemberServiceV1.class)).saveUser(isA(MemberDTO.class));
+        mock(MemberServiceV1.class).saveUser(member);
 
         // andExpect : 기대하는 값이 나왔는지 체크
         mockMvc.perform(post("/api/v1/signup")
@@ -66,7 +67,7 @@ public class MemberControllerTest {
                 .andExpect(status().is2xxSuccessful());
 
         // verify : 해당 객체의 메소드가 실행되었는지 체크
-        verify(memberService).saveUser(member);
+        verify(memberServiceV1).saveUser(member);
     }
 
     // 로그인
@@ -75,7 +76,7 @@ public class MemberControllerTest {
     @DisplayName("로그인 테스트")
     public void userLoginTest() throws Exception {
         // given
-        given(memberService.getAuthToken("test@test.com", "1234")).willReturn(
+        given(memberServiceV1.getAuthToken("test@test.com", "1234")).willReturn(
                 "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3MDY2NzcxOTAsInVzZXJJZCI6ImhvbmcxMiJ9.oTl_bkZArOZ1CrrMx0uNi_ukP9RmLFLJRzlY4Wi_yFSzDotSZuR8O84mjE8qcXI9Yyp4JrzN3llgStkdy8n4TQ"
         );
 
@@ -93,7 +94,7 @@ public class MemberControllerTest {
                 .andDo(print());
 
         // verify : 해당 객체의 메소드가 실행되었는지 체크
-        verify(memberService).getAuthToken("test@test.com", "1234");
+        verify(memberServiceV1).getAuthToken("test@test.com", "1234");
     }
 
 }
