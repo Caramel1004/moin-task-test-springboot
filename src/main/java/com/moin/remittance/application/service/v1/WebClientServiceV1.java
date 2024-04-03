@@ -7,6 +7,6 @@ import java.util.HashMap;
 
 
 @Service
-public interface WebClientService {
+public interface WebClientServiceV1 {
     HashMap<String, ExchangeRateInfoDTO> fetchExchangeRateInfoFromExternalAPI(String codes);
 }

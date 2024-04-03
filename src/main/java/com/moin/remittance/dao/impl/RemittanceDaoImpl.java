@@ -27,7 +27,7 @@ public class RemittanceDaoImpl implements RemittanceDAO {
     // 송금 견적서 저장
     @Override
     public RemittanceQuoteEntity saveRemittanceQuote(RemittanceQuoteDTO dto) {
-        return remittanceRepository.save(new RemittanceQuoteEntity().toEntity(dto));
+        return remittanceRepository.save(dto.toEntity(dto));
     }
 
     // 송금 견적서 조회

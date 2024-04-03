@@ -36,7 +36,7 @@ public class RemittanceControllerV1 {
                         .statusCode(SUCCESS_GET_REMITTANCE_QUOTE.getStatusCode())
                         .message(SUCCESS_GET_REMITTANCE_QUOTE.getMessage())
                         .codeName(SUCCESS_GET_REMITTANCE_QUOTE.getCodeName())
-                        .data(remittanceServiceV1.getRemittanceQuote(requestParams))
+                        .data(remittanceQuoteDTO)
                         .build()
         );
     }

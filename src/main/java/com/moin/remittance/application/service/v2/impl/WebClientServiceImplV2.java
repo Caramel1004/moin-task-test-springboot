@@ -1,8 +1,8 @@
-package com.moin.remittance.application.service.v1.impl;
+package com.moin.remittance.application.service.v2.impl;
 
-import com.moin.remittance.application.service.v1.WebClientService;
-import com.moin.remittance.domain.dto.remittance.ExchangeRateInfoDTO;
 import com.moin.remittance.exception.NotExternalDataException;
+import com.moin.remittance.domain.dto.remittance.ExchangeRateInfoDTO;
+import com.moin.remittance.application.service.v2.WebClientServiceV2;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,7 +13,7 @@ import java.util.List;
 import static com.moin.remittance.domain.vo.HttpResponseCode.INTERNAL_SERVER_ERROR_EXCHANGE_RATE_DATA;
 
 @Service
-public class WebClientServiceImpl implements WebClientService {
+public class WebClientServiceImplV2 implements WebClientServiceV2 {
     @Override
     public HashMap<String, ExchangeRateInfoDTO> fetchExchangeRateInfoFromExternalAPI(String codes) {
         // webClient 기본 설정

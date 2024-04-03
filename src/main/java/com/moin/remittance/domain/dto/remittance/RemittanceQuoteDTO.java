@@ -1,10 +1,17 @@
 package com.moin.remittance.domain.dto.remittance;
 
+import com.moin.remittance.domain.entity.remittance.RemittanceQuoteEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RemittanceQuoteDTO {
     private Long quoteId;
     // 송금 할 금액(원화)
@@ -37,7 +44,18 @@ public class RemittanceQuoteDTO {
         this.exchangeRate = targetDTO.getBasePrice();
     }
 
-    public RemittanceQuoteDTO () {
-
+    public RemittanceQuoteEntity toEntity (RemittanceQuoteDTO dto) {
+        return RemittanceQuoteEntity.builder()
+                .sourceAmount(dto.getSourceAmount())// 원화
+                .fee(dto.getFee())// 수수료
+                .usdExchangeRate(dto.getUsdExchangeRate())
+                .usdAmount(dto.getUsdAmount())// USD 송금액
+                .targetCurrency(dto.getTargetCurrency())
+                .targetAmount(dto.getTargetAmount())// 받는 금액
+                .exchangeRate(dto.getExchangeRate())
+                .expireTime(dto.getExpireTime())// 송금 견적서 만료 기간
+                .build();
     }
+
+
 }

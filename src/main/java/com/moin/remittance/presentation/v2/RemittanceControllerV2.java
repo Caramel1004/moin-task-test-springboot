@@ -1,6 +1,6 @@
 package com.moin.remittance.presentation.v2;
 
-import com.moin.remittance.application.service.v1.RemittanceServiceV1;
+import com.moin.remittance.application.service.v2.RemittanceServiceV2;
 import com.moin.remittance.domain.dto.remittance.RemittanceQuoteResponseDTO;
 import com.moin.remittance.domain.dto.remittance.TransactionLogDTO;
 import com.moin.remittance.domain.dto.requestbody.RemittanceAcceptRequestBodyDTO;
@@ -20,23 +20,24 @@ import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 @RequestMapping(value = "/api/v2/transfer")
 public class RemittanceControllerV2 {
 
-    private final RemittanceServiceV1 remittanceService;
+    private final RemittanceServiceV2 remittanceService;
 
-    // 송금 견적서 호출
-    @GetMapping("/quote")
-    public ResponseEntity<HttpResponseBody> getRemittanceQuote(@RequestHeader("Authorization") HttpHeaders header,
-                                                               @Valid RemittanceQuoteRequestParamsDTO requestParams) {
-//        String accessToken = header.getFirst("Authorization").split("Bearer ")[1];
-        // 송금 견적서 조회
-        RemittanceQuoteResponseDTO remittanceQuoteDTO = remittanceService.getRemittanceQuote(requestParams);
-
-        // Response 처리
+    /**
+     * EndPoint: GET /api/v2/transfer/quote
+     * 기능: 두나무 오픈 API를 스크래핑해서 환율이 적용된 송금 견적서를 리턴
+     *
+     * @RequestParam RemittanceQuoteRequestParamsDTO: 송금 견적서 요청 파라미터
+     * @Param String amount: 원화
+     * @Param String targetCurrency: 타겟 통화
+     **/
+    @GetMapping(value = "/quote", headers = "API-Version=2")
+    public ResponseEntity<HttpResponseBody> getRemittanceQuoteV2(@Valid RemittanceQuoteRequestParamsDTO requestParams) {
         return ResponseEntity.status(SUCCESS_GET_REMITTANCE_QUOTE.getStatusCode()).body(
                 HttpResponseBody.<RemittanceQuoteResponseDTO>builder()
                         .statusCode(SUCCESS_GET_REMITTANCE_QUOTE.getStatusCode())
                         .message(SUCCESS_GET_REMITTANCE_QUOTE.getMessage())
                         .codeName(SUCCESS_GET_REMITTANCE_QUOTE.getCodeName())
-                        .data(remittanceService.getRemittanceQuote(requestParams))
+                        .data(remittanceService.getRemittanceQuoteV2(requestParams))
                         .build()
         );
     }

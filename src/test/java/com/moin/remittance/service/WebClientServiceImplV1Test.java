@@ -1,14 +1,14 @@
 package com.moin.remittance.service;
 
-import com.moin.remittance.application.service.v2.impl.WebClientServiceImpl;
+import com.moin.remittance.application.service.v2.impl.WebClientServiceImplV2;
 import com.moin.remittance.domain.dto.remittance.ExchangeRateInfoDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.reactive.function.client.WebClient;
 
-@SpringBootTest(classes = WebClientServiceImpl.class)
-public class WebClientServiceImplTest {
+@SpringBootTest(classes = WebClientServiceImplV2.class)
+public class WebClientServiceImplV1Test {
 
     @Test
     @DisplayName("다나움 외부 API로 환율 정보 호출")

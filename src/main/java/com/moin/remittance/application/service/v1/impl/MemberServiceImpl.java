@@ -1,6 +1,6 @@
 package com.moin.remittance.application.service.v1.impl;
 
-import com.moin.remittance.application.service.v2.MemberServiceV2;
+import com.moin.remittance.application.service.v1.MemberServiceV1;
 import com.moin.remittance.dao.MemberDAO;
 import com.moin.remittance.domain.dto.member.MemberDTO;
 import com.moin.remittance.exception.DuplicateUserIdException;
@@ -18,7 +18,7 @@ import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberServiceV2 {
+public class MemberServiceImpl implements MemberServiceV1 {
     private final MemberDAO memberDAO;
 
     @Value("${jwt.token.secret}")

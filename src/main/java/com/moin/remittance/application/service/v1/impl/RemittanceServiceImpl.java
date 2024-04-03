@@ -1,7 +1,7 @@
 package com.moin.remittance.application.service.v1.impl;
 
 import com.moin.remittance.application.service.v1.RemittanceServiceV1;
-import com.moin.remittance.application.service.v1.WebClientService;
+import com.moin.remittance.application.service.v1.WebClientServiceV1;
 import com.moin.remittance.dao.MemberDAO;
 import com.moin.remittance.dao.RemittanceDAO;
 import com.moin.remittance.domain.dto.remittance.*;
@@ -30,7 +30,7 @@ public class RemittanceServiceImpl implements RemittanceServiceV1 {
 
     private final MemberDAO memberDAO;
 
-    private final WebClientService webClientService;
+    private final WebClientServiceV1 webClientServiceV1;
 
 
     /**
@@ -48,7 +48,7 @@ public class RemittanceServiceImpl implements RemittanceServiceV1 {
         }
 
         // 2. 외부API 호출로 환율 정보 응답 데이터 받기
-        HashMap<String, ExchangeRateInfoDTO> exchangeRateInfoHashMap = webClientService.fetchExchangeRateInfoFromExternalAPI(reqParamDTO.getCodes());// 환율 정보 DTO
+        HashMap<String, ExchangeRateInfoDTO> exchangeRateInfoHashMap = webClientServiceV1.fetchExchangeRateInfoFromExternalAPI(reqParamDTO.getCodes());// 환율 정보 DTO
 
         /* 3. 외부 API 환율 정보 요청
          * - 만료 기간 = 생성시간 + 10분
@@ -80,7 +80,7 @@ public class RemittanceServiceImpl implements RemittanceServiceV1 {
         // 5. 송금 견적서 저장(DB)
         RemittanceQuoteEntity remittanceQuoteEntity = remittanceDAO.saveRemittanceQuote(dto);
 
-        return new RemittanceQuoteResponseDTO(remittanceQuoteEntity);
+        return RemittanceQuoteResponseDTO.of(remittanceQuoteEntity);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class RemittanceServiceImpl implements RemittanceServiceV1 {
             throw new InValidPatternTypeException(BAD_NOT_FOUND_ID_TYPE);
         }
 
-        double usdExchangeRate = webClientService.fetchExchangeRateInfoFromExternalAPI("FRX.KRWUSD").get("USD").getBasePrice();// 지금 현재 달러 환율 -> 외부 API
+        double usdExchangeRate = webClientServiceV1.fetchExchangeRateInfoFromExternalAPI("FRX.KRWUSD").get("USD").getBasePrice();// 지금 현재 달러 환율 -> 외부 API
         double usdSourceAmountNotToFee = calculateExchangeRate(sumOfsourceAmount, usdExchangeRate);// 수수료없는 순수 원화를 달러로 환산
 
         // 2. 유저의 보낸금액의 총합이 이미 한도액을 넘었는지 비교

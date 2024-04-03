@@ -52,17 +52,4 @@ public class RemittanceQuoteEntity {
     // 만료 기간
     @Column(name = "expire_time", nullable = false)
     private OffsetDateTime expireTime;
-
-    public RemittanceQuoteEntity toEntity (RemittanceQuoteDTO dto) {
-        return RemittanceQuoteEntity.builder()
-                .sourceAmount(dto.getSourceAmount())
-                .fee(dto.getFee())
-                .usdExchangeRate(dto.getUsdExchangeRate())
-                .usdAmount(dto.getUsdAmount())
-                .targetCurrency(dto.getTargetCurrency())
-                .targetAmount(dto.getTargetAmount())
-                .exchangeRate(dto.getExchangeRate())
-                .expireTime(dto.getExpireTime())
-                .build();
-    }
 }

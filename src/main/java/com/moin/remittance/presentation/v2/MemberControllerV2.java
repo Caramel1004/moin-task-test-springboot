@@ -1,6 +1,6 @@
 package com.moin.remittance.presentation.v2;
 
-import com.moin.remittance.application.service.v1.MemberServiceV1;
+import com.moin.remittance.application.service.v2.MemberServiceV2;
 import com.moin.remittance.domain.dto.member.MemberDTO;
 import com.moin.remittance.domain.dto.requestbody.MemberLoginRequestBodyDTO;
 import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
@@ -21,7 +21,7 @@ import static com.moin.remittance.domain.vo.HttpResponseCode.SUCCESS_MEMBER_SIGN
 @RequestMapping(value = "/api/v2/user")
 public class MemberControllerV2 {
 
-    private final MemberServiceV1 memberService;
+    private final MemberServiceV2 memberService;
 
     /*회원 가입
      * @RequestBody properties

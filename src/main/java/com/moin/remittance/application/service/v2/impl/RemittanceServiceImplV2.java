@@ -1,16 +1,22 @@
 package com.moin.remittance.application.service.v2.impl;
 
-import com.moin.remittance.application.service.v1.WebClientService;
+import com.moin.remittance.application.service.v2.WebClientServiceV2;
+import com.moin.remittance.application.service.v2.RemittanceServiceV2;
 import com.moin.remittance.dao.MemberDAO;
 import com.moin.remittance.dao.RemittanceDAO;
 import com.moin.remittance.exception.AmountLimitExcessException;
 import com.moin.remittance.exception.ExpirationTimeOverException;
 import com.moin.remittance.exception.InValidPatternTypeException;
 import com.moin.remittance.exception.NegativeNumberException;
-import com.moin.remittance.domain.dto.remittance.*;
+import com.moin.remittance.domain.dto.remittance.RemittanceQuoteResponseDTO;
+import com.moin.remittance.domain.dto.remittance.ExchangeRateInfoDTO;
+import com.moin.remittance.domain.dto.remittance.RemittanceQuoteDTO;
+import com.moin.remittance.domain.dto.remittance.RemittanceLogDTO;
+import com.moin.remittance.domain.dto.remittance.TransactionLogDTO;
+import com.moin.remittance.domain.dto.remittance.RemittanceHistoryDTO;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
-import com.moin.remittance.domain.entity.remittance.RemittanceQuoteEntity;
-import com.moin.remittance.application.service.v1.RemittanceServiceV1;
+
+import com.moin.remittance.repository.RemittanceRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,33 +31,33 @@ import static com.moin.remittance.util.ExchangeRateCalculator.*;
 
 @Service
 @RequiredArgsConstructor
-public class RemittanceServiceImpl implements RemittanceServiceV1 {
+public class RemittanceServiceImplV2 implements RemittanceServiceV2 {
+
+    private final RemittanceRepository remittanceRepository;
 
     private final RemittanceDAO remittanceDAO;
 
     private final MemberDAO memberDAO;
 
-    private final WebClientService webClientService;
+    private final WebClientServiceV2 webClientService;
 
 
     /**
-     * @param reqParamDTO 요청 쿼리 파라미터 DTO
-     * @return RemittanceQuoteResponseDTO 송금 견적서 DTO
-     * @throws NegativeNumberException 보내는 금액이 음수일 경우
+     * @Parameter RemittanceQuoteRequestParamsDTO: 송금 견적서 요청 파라미터
+     * @Param String codes: 통화 코드
+     * @Param String amount: 원화
+     * @Param String targetCurrency: 타겟 통화
+     *
+     * @Return RemittanceQuoteResponseDTO: 송금 견적서
      */
     @Override
     @Transactional
-    public RemittanceQuoteResponseDTO getRemittanceQuote(RemittanceQuoteRequestParamsDTO reqParamDTO) {
+    public RemittanceQuoteResponseDTO getRemittanceQuoteV2(RemittanceQuoteRequestParamsDTO reqParamDTO) {
+        // 1. 외부 API 호출로 환율 정보 응답 데이터 받기
+        HashMap<String, ExchangeRateInfoDTO> exchangeRateInfoHashMap =
+                webClientService.fetchExchangeRateInfoFromExternalAPI(reqParamDTO.getCodes());// 환율 정보 DTO
 
-        // 1. 보내는 금액 음의 정수: Error throw
-        if (reqParamDTO.getAmount() < 0) {
-            throw new NegativeNumberException(BAD_NEGATIVE_AMOUNT);
-        }
-
-        // 2. 외부API 호출로 환율 정보 응답 데이터 받기
-        HashMap<String, ExchangeRateInfoDTO> exchangeRateInfoHashMap = webClientService.fetchExchangeRateInfoFromExternalAPI(reqParamDTO.getCodes());// 환율 정보 DTO
-
-        /* 3. 외부 API 환율 정보 요청
+        /* 2. 외부 API 환율 정보 요청
          * - 만료 기간 = 생성시간 + 10분
          * - 수수료 = 보내는금액(amount: 원화) * 수수료율 + 고정 수수료 => 소수점 반올림(int 형)
          * - 받는 금액 = (보내는 금액 - 수수료) / 환율
@@ -71,17 +77,15 @@ public class RemittanceServiceImpl implements RemittanceServiceV1 {
         }
         OffsetDateTime expireTime = calculateExpireTime(10); // 송금 견적서 만료 시간 계산
 
-        RemittanceQuoteDTO dto = new RemittanceQuoteDTO(usdExRateDTO, targetExRateDTO);// 송금 견적서 DTO
-        dto.setSourceAmount(reqParamDTO.getAmount());// 원화
-        dto.setFee(fee);// 수수료
-        dto.setUsdAmount(usdAmount); // USD 송금액
-        dto.setTargetAmount(targetAmount); // 받는 금액
-        dto.setExpireTime(expireTime); // 송금 견적서 만료 기간
+        RemittanceQuoteDTO remittanceQuoteDTO = new RemittanceQuoteDTO(usdExRateDTO, targetExRateDTO);// 송금 견적서 DTO
+        remittanceQuoteDTO.setSourceAmount(reqParamDTO.getAmount());// 원화
+        remittanceQuoteDTO.setFee(fee);// 수수료
+        remittanceQuoteDTO.setUsdAmount(usdAmount); // USD 송금액
+        remittanceQuoteDTO.setTargetAmount(targetAmount); // 받는 금액
+        remittanceQuoteDTO.setExpireTime(expireTime); // 송금 견적서 만료 기간
 
-        // 5. 송금 견적서 저장(DB)
-        RemittanceQuoteEntity remittanceQuoteEntity = remittanceDAO.saveRemittanceQuote(dto);
-
-        return new RemittanceQuoteResponseDTO(remittanceQuoteEntity);
+        // 5. 송금 견적서 저장(DB) -> 송금 견적서 리턴
+        return RemittanceQuoteResponseDTO.of(remittanceRepository.saveAndFlush(remittanceQuoteDTO.toEntity(remittanceQuoteDTO)));
     }
 
     @Override

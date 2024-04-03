@@ -7,6 +7,7 @@ import java.time.OffsetDateTime;
 
 /* 환율을 적용한 송금 견적서 */
 @Data
+@Builder
 public class RemittanceQuoteResponseDTO {
     // 채번한 송금 견적서 아이디
     private Long quoteId;
@@ -20,10 +21,12 @@ public class RemittanceQuoteResponseDTO {
     // 받는 금액
     private double targetAmount;
 
-    public RemittanceQuoteResponseDTO(RemittanceQuoteEntity quote) {
-        this.quoteId = quote.getQuoteId();
-        this.exchangeRate = quote.getExchangeRate();
-        this.expireTime = quote.getExpireTime();
-        this.targetAmount = quote.getTargetAmount();
+    public static RemittanceQuoteResponseDTO of(RemittanceQuoteEntity entity) {
+        return RemittanceQuoteResponseDTO.builder()
+                .quoteId(entity.getQuoteId())
+                .exchangeRate(entity.getExchangeRate())
+                .expireTime(entity.getExpireTime())
+                .targetAmount(entity.getTargetAmount())
+                .build();
     }
 }

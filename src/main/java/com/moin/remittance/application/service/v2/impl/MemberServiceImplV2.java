@@ -19,7 +19,7 @@ import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberServiceV2 {
+public class MemberServiceImplV2 implements MemberServiceV2 {
     private final MemberDAO memberDAO;
 
     @Value("${jwt.token.secret}")
