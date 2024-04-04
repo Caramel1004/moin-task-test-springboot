@@ -12,7 +12,7 @@ import java.util.Currency;
 
 import static java.lang.Math.round;
 
-public class ExchangeRateCalculatorTest {
+public class ExchangeRateCalculatorCalculatorTest {
     @Test
     @DisplayName("환율 계산")
     public void calculateExchangeRate() {
