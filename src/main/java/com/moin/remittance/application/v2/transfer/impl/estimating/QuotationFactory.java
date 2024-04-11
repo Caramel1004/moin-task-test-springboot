@@ -5,13 +5,10 @@ import com.moin.remittance.application.v2.transfer.impl.estimating.calculating.E
 import com.moin.remittance.application.v2.transfer.impl.estimating.policy.FeePolicyFactory;
 import com.moin.remittance.domain.dto.remittance.v2.ExchangeRateInfoDTO;
 import com.moin.remittance.domain.dto.remittance.v2.RemittanceQuoteV2DTO;
-import com.moin.remittance.exception.NegativeNumberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-
-import static com.moin.remittance.domain.vo.HttpResponseCode.BAD_NEGATIVE_TARGET_AMOUNT;
 
 @Component
 @RequiredArgsConstructor
