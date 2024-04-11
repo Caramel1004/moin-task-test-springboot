@@ -1,10 +1,9 @@
 package com.moin.remittance.presentation.v1;
 
-import com.moin.remittance.application.service.v1.MemberServiceV1;
+import com.moin.remittance.application.v1.MemberServiceV1;
 import com.moin.remittance.domain.dto.member.MemberDTO;
 import com.moin.remittance.domain.dto.requestbody.MemberLoginRequestBodyDTO;
 
-import com.moin.remittance.presentation.v1.MemberControllerV1;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

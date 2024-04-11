@@ -1,6 +1,6 @@
 package com.moin.remittance.exception.handler;
 
-import com.moin.remittance.domain.dto.remittance.TransactionLogDTO;
+import com.moin.remittance.domain.dto.remittance.v1.TransactionLogDTO;
 import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
 import com.moin.remittance.exception.dto.ErrorResponseDTO;
 import com.moin.remittance.exception.*;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.net.http.HttpResponse;
 import java.util.HashMap;
 
 import static com.moin.remittance.domain.vo.HttpResponseCode.*;

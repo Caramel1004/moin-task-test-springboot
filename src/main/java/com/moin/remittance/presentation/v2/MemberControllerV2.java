@@ -1,6 +1,6 @@
 package com.moin.remittance.presentation.v2;
 
-import com.moin.remittance.application.service.v2.MemberServiceV2;
+import com.moin.remittance.application.v2.user.MemberServiceV2;
 import com.moin.remittance.domain.dto.member.MemberDTO;
 import com.moin.remittance.domain.dto.requestbody.MemberLoginRequestBodyDTO;
 import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;

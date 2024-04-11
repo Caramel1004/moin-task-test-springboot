@@ -1,6 +1,6 @@
 package com.moin.remittance.repository;
 
-import com.moin.remittance.domain.entity.remittance.RemittanceLogEntity;
+import com.moin.remittance.domain.entity.remittance.v1.RemittanceLogEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -1,13 +1,13 @@
 package com.moin.remittance.dao.impl;
 
 import com.moin.remittance.dao.RemittanceDAO;
-import com.moin.remittance.domain.dto.remittance.RemittanceHistoryDTO;
-import com.moin.remittance.domain.dto.remittance.RemittanceLogDTO;
-import com.moin.remittance.domain.dto.remittance.RemittanceQuoteDTO;
-import com.moin.remittance.domain.entity.remittance.RemittanceLogEntity;
-import com.moin.remittance.domain.entity.remittance.RemittanceQuoteEntity;
+import com.moin.remittance.domain.dto.remittance.v1.RemittanceHistoryDTO;
+import com.moin.remittance.domain.dto.remittance.v1.RemittanceLogDTO;
+import com.moin.remittance.domain.dto.remittance.v1.RemittanceQuoteDTO;
+import com.moin.remittance.domain.entity.remittance.v1.RemittanceLogEntity;
+import com.moin.remittance.domain.entity.remittance.v1.RemittanceQuoteEntity;
 import com.moin.remittance.repository.RemittanceLogRepository;
-import com.moin.remittance.repository.RemittanceRepository;
+import com.moin.remittance.repository.v1.RemittanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Repository;
