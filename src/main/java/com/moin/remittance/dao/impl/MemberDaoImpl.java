@@ -2,7 +2,7 @@ package com.moin.remittance.dao.impl;
 
 import com.moin.remittance.dao.MemberDAO;
 import com.moin.remittance.domain.dto.member.MemberDTO;
-import com.moin.remittance.domain.entity.member.MemberEntity;
+import com.moin.remittance.domain.entity.member.v1.MemberEntity;
 import com.moin.remittance.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

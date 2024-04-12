@@ -1,9 +1,9 @@
 package com.moin.remittance.dao;
 
-import com.moin.remittance.domain.dto.remittance.RemittanceHistoryDTO;
-import com.moin.remittance.domain.dto.remittance.RemittanceLogDTO;
-import com.moin.remittance.domain.dto.remittance.RemittanceQuoteDTO;
-import com.moin.remittance.domain.entity.remittance.RemittanceQuoteEntity;
+import com.moin.remittance.domain.dto.remittance.v1.RemittanceHistoryDTO;
+import com.moin.remittance.domain.dto.remittance.v1.RemittanceLogDTO;
+import com.moin.remittance.domain.dto.remittance.v1.RemittanceQuoteDTO;
+import com.moin.remittance.domain.entity.remittance.v1.RemittanceQuoteEntity;
 
 import java.util.List;
 

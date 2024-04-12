@@ -21,7 +21,7 @@ public class ExchangeRateCalculator {
 
         int decimalPlaces = Currency.getInstance(currencyCode).getDefaultFractionDigits();
 
-        BigDecimal targetAmount = krw.divide(targetCurrencyToKrwExchangeRate, decimalPlaces, BigDecimal.ROUND_HALF_UP);// 자릿수 getDefaultFractionDigits
+        BigDecimal targetAmount = krw.divide(targetCurrencyToKrwExchangeRate, decimalPlaces, RoundingMode.HALF_UP);// 자릿수 getDefaultFractionDigits
 
         return Double.parseDouble(String.valueOf(targetAmount));
     }
@@ -35,7 +35,7 @@ public class ExchangeRateCalculator {
 
         int decimalPlaces = Currency.getInstance("USD").getDefaultFractionDigits();
 
-        BigDecimal targetAmount = krw.divide(targetCurrencyToKrwExchangeRate, decimalPlaces, BigDecimal.ROUND_HALF_UP);
+        BigDecimal targetAmount = krw.divide(targetCurrencyToKrwExchangeRate, decimalPlaces, RoundingMode.HALF_UP);
 
         return Double.parseDouble(String.valueOf(targetAmount));
     }

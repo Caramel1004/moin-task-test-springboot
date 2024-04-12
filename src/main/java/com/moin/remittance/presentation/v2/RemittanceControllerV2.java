@@ -1,8 +1,8 @@
 package com.moin.remittance.presentation.v2;
 
-import com.moin.remittance.application.service.v2.RemittanceServiceV2;
-import com.moin.remittance.domain.dto.remittance.RemittanceQuoteResponseDTO;
-import com.moin.remittance.domain.dto.remittance.TransactionLogDTO;
+import com.moin.remittance.application.v2.transfer.RemittanceServiceV2;
+import com.moin.remittance.domain.dto.remittance.v1.TransactionLogDTO;
+import com.moin.remittance.domain.dto.remittance.v2.RemittanceQuoteResponseV2DTO;
 import com.moin.remittance.domain.dto.requestbody.RemittanceAcceptRequestBodyDTO;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
 import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
@@ -33,7 +33,7 @@ public class RemittanceControllerV2 {
     @GetMapping(value = "/quote", headers = "API-Version=2")
     public ResponseEntity<HttpResponseBody> getRemittanceQuoteV2(@Valid RemittanceQuoteRequestParamsDTO requestParams) {
         return ResponseEntity.status(SUCCESS_GET_REMITTANCE_QUOTE.getStatusCode()).body(
-                HttpResponseBody.<RemittanceQuoteResponseDTO>builder()
+                HttpResponseBody.<RemittanceQuoteResponseV2DTO>builder()
                         .statusCode(SUCCESS_GET_REMITTANCE_QUOTE.getStatusCode())
                         .message(SUCCESS_GET_REMITTANCE_QUOTE.getMessage())
                         .codeName(SUCCESS_GET_REMITTANCE_QUOTE.getCodeName())
