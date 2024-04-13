@@ -47,5 +47,18 @@ public class RemittanceQuoteV2DTO {
                 .build();
     }
 
+    public static RemittanceQuoteV2DTO of (RemittanceQuoteEntityV2 dto) {
+        return RemittanceQuoteV2DTO.builder()
+                .sourceAmount(dto.getSourceAmount())// 원화
+                .fee(new BigDecimal(String.valueOf(dto.getFee())))// 수수료
+                .usdExchangeRate(dto.getUsdExchangeRate())
+                .usdAmount(dto.getUsdAmount())// USD 송금액
+                .targetCurrency(dto.getTargetCurrency())
+                .targetAmount(dto.getTargetAmount())// 받는 금액
+                .exchangeRate(dto.getExchangeRate())
+                .expireTime(dto.getExpireTime())// 송금 견적서 만료 기간
+                .build();
+    }
+
 
 }

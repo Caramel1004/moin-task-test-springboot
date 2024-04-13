@@ -1,6 +1,7 @@
 package com.moin.remittance.repository;
 
 import com.moin.remittance.domain.entity.member.v1.MemberEntity;
+import com.moin.remittance.repository.v2.MemberRepositoryV2;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class MemberRepositoryTest {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberRepositoryV2 memberRepository;
 
     /**
      * 회원가입

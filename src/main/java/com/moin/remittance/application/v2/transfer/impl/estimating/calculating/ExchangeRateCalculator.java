@@ -21,9 +21,9 @@ public class ExchangeRateCalculator {
 
         BigDecimal targetAmount = krw.divide(targetCurrencyToKrwExchangeRate, decimalPlaces, RoundingMode.HALF_UP);
 
-        if (targetAmount.compareTo(new BigDecimal(0)) <= 0) {
-            throw new NegativeNumberException(BAD_NEGATIVE_TARGET_AMOUNT);
-        }
+//        if (targetAmount.compareTo(new BigDecimal(0)) <= 0) {
+//            throw new NegativeNumberException(BAD_NEGATIVE_TARGET_AMOUNT);
+//        }
 
         // 자릿수 getDefaultFractionDigits
         return targetAmount;

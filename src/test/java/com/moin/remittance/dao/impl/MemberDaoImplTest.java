@@ -1,6 +1,6 @@
 package com.moin.remittance.dao.impl;
 
-import com.moin.remittance.repository.MemberRepository;
+import com.moin.remittance.repository.v2.MemberRepositoryV2;
 import com.moin.remittance.domain.entity.member.v1.MemberEntity;
 
 import org.junit.jupiter.api.Assertions;
@@ -18,11 +18,11 @@ public class MemberDaoImplTest {
 
     // MemberRepository에서 잡고있는 Bean객체에 대 Mock 형태의 객체를 생성 해줌
     @MockBean
-    private final MemberRepository memberRepository;
+    private final MemberRepositoryV2 memberRepository;
 
 
     @Autowired
-    public MemberDaoImplTest (MemberRepository memberRepository) {
+    public MemberDaoImplTest (MemberRepositoryV2 memberRepository) {
 //        this.mockBean = mockBean;
         this.memberRepository = memberRepository;
     }

@@ -1,4 +1,4 @@
-package com.moin.remittance.repository;
+package com.moin.remittance.repository.v1;
 
 import com.moin.remittance.domain.entity.member.v1.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

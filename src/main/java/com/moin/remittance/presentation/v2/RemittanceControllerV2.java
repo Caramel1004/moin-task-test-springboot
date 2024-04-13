@@ -49,7 +49,6 @@ public class RemittanceControllerV2 {
         // 송금 접수 요청
         remittanceService.requestRemittanceAccept(requestBody.getQuoteId(), "test@test.com");
 
-
         // Response 처리
         return ResponseEntity.status(SUCCESS_REQUEST_REMITTANCE_ACCEPT.getStatusCode()).body(
                 HttpResponseBody.builder()
