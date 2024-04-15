@@ -1,6 +1,6 @@
-package com.moin.remittance.dao.impl;
+package com.moin.remittance.application.v1.dao.impl;
 
-import com.moin.remittance.dao.RemittanceDAO;
+import com.moin.remittance.application.v1.dao.RemittanceDAO;
 import com.moin.remittance.domain.dto.remittance.v1.RemittanceHistoryDTO;
 import com.moin.remittance.domain.dto.remittance.v1.RemittanceLogDTO;
 import com.moin.remittance.domain.dto.remittance.v1.RemittanceQuoteDTO;

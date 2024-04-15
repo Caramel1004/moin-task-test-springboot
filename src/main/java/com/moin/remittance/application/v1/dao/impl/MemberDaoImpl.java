@@ -1,6 +1,6 @@
-package com.moin.remittance.dao.impl;
+package com.moin.remittance.application.v1.dao.impl;
 
-import com.moin.remittance.dao.MemberDAO;
+import com.moin.remittance.application.v1.dao.MemberDAO;
 import com.moin.remittance.domain.dto.member.MemberDTO;
 import com.moin.remittance.domain.entity.member.v1.MemberEntity;
 import com.moin.remittance.repository.v1.MemberRepository;

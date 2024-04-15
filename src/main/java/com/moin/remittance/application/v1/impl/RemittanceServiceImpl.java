@@ -2,8 +2,8 @@ package com.moin.remittance.application.v1.impl;
 
 import com.moin.remittance.application.v1.RemittanceServiceV1;
 import com.moin.remittance.application.v1.WebClientServiceV1;
-import com.moin.remittance.dao.MemberDAO;
-import com.moin.remittance.dao.RemittanceDAO;
+import com.moin.remittance.application.v1.dao.MemberDAO;
+import com.moin.remittance.application.v1.dao.RemittanceDAO;
 import com.moin.remittance.domain.dto.remittance.v1.*;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
 import com.moin.remittance.domain.entity.remittance.v1.RemittanceQuoteEntity;

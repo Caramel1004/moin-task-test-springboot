@@ -1,4 +1,4 @@
-package com.moin.remittance.dao;
+package com.moin.remittance.application.v1.dao;
 
 import com.moin.remittance.domain.dto.member.MemberDTO;
 
