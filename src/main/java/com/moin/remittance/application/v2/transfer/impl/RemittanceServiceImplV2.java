@@ -4,31 +4,26 @@ import com.moin.remittance.application.v2.api.ExchangeRateApiClientV2;
 import com.moin.remittance.application.v2.transfer.RemittanceServiceV2;
 import com.moin.remittance.application.v2.transfer.impl.estimating.Quotation;
 import com.moin.remittance.application.v2.transfer.impl.remitting.RemittancePolicyChecker;
-import com.moin.remittance.dao.MemberDAO;
-import com.moin.remittance.dao.RemittanceDAO;
-import com.moin.remittance.domain.dto.remittance.v2.RemittanceLogV2DTO;
-import com.moin.remittance.domain.dto.remittance.v2.RemittanceQuoteResponseV2DTO;
 
-
-import com.moin.remittance.domain.dto.remittance.v2.ExchangeRateInfoDTO;
-import com.moin.remittance.domain.dto.remittance.v2.RemittanceQuoteV2DTO;
-import com.moin.remittance.domain.dto.remittance.v1.TransactionLogDTO;
-import com.moin.remittance.domain.dto.remittance.v1.RemittanceHistoryDTO;
+import com.moin.remittance.domain.dto.remittance.v2.*;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
 
 import com.moin.remittance.exception.NullPointerQuotationException;
+
+import com.moin.remittance.repository.v2.MemberRepositoryV2;
 import com.moin.remittance.repository.v2.RemittanceLogRepositoryV2;
 import com.moin.remittance.repository.v2.RemittanceRepositoryV2;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
@@ -38,16 +33,13 @@ public class RemittanceServiceImplV2 implements RemittanceServiceV2 {
 
     private final RemittanceLogRepositoryV2 remittanceLogRepositoryV2;
 
-    private final RemittanceDAO remittanceDAO;
-
-    private final MemberDAO memberDAO;
+    private final MemberRepositoryV2 memberRepositoryV2;
 
     private final ExchangeRateApiClientV2 exchangeRateApiClient;
 
     private final Quotation quotation;
 
     private final RemittancePolicyChecker remittancePolicyChecker;
-
 
     /**
      * @Parameter RemittanceQuoteRequestParamsDTO: 송금 견적서 요청 파라미터
@@ -109,15 +101,30 @@ public class RemittanceServiceImplV2 implements RemittanceServiceV2 {
 
     @Override
     @Transactional
-    public TransactionLogDTO getRemittanceLogList(String userId) {
+    public TransactionLogV2DTO getRemittanceLogList(String userId) {
         // 1. userId와 일치하는 송금 거래 이력 조회
-        List<RemittanceHistoryDTO> log = remittanceDAO.findRemittanceLogListByUserId(userId);
+        List<RemittanceHistoryV2DTO> remittanceHistory =
+                remittanceLogRepositoryV2.findByUserId(userId)
+                        .stream()
+                        .map(entity -> new ModelMapper().map(entity, RemittanceHistoryV2DTO.class))
+                        .toList();
 
-        // 2. 유저 아이디와 일치하는 유저 이름
-        String name = memberDAO.getNameOfMemberByUserId(userId);
-
-        // 3. 송금횟수랑 송금금액은 테이블 레코드 합산으로 처리 => 돈과 관련된 로직이므로 횟수를 디비에 저장하는거보다 레코드 카운트로 세는게 더 정확하다 판단
-        return new TransactionLogDTO(log, userId, name);
+        /* 2. 송금횟수랑 송금금액은 테이블 레코드 합산으로 처리 =>
+         *          횟수를 디비에 저장하는거보다 레코드 카운트로 세는게 더 정확하다 판단
+         * */
+        return TransactionLogV2DTO.builder()
+                .userId(userId)
+                .name(memberRepositoryV2.getNameOfMemberByUserId(userId))
+                .todayTransferUsdAmount(
+                        remittanceHistory.stream()
+                                .filter(e -> e.getRequestedDate().isEqual(OffsetDateTime.now()))
+                                .map(RemittanceHistoryV2DTO::getUsdAmount)
+                                .reduce(BigDecimal::add)
+                                .orElse(new BigDecimal(0))
+                )
+                .todayTransferCount(remittanceHistory.size())
+                .history(remittanceHistory)
+                .build();
     }
 
 }

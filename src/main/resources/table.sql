@@ -57,7 +57,7 @@ CREATE TABLE remittance_quote_v2 (
 CREATE TABLE remittance_log_v2 (
     log_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     source_amount BIGINT NOT NULL,
-    fee double NOT NULL,
+    fee decimal(10, 0) NOT NULL,
     usd_exchange_rate decimal(10, 0) NOT NULL,
     usd_amount decimal(10, 0) NOT NULL,
     target_currency VARCHAR(255) NOT NULL,

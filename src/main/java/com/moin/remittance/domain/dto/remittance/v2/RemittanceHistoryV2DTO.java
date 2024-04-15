@@ -1,30 +1,31 @@
 package com.moin.remittance.domain.dto.remittance.v2;
 
-import lombok.Data;
+import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 @Data
-public class RemittanceHistoryDTO {
+public class RemittanceHistoryV2DTO {
     private long sourceAmount;
 
     // 수수료 = 보내는금액(amount: 원화) * 수수료율 + 고정 수수료
-    private double fee;
+    private BigDecimal fee;
 
     // USD 환율(base price)
-    private double usdExchangeRate;
+    private BigDecimal usdExchangeRate;
 
     // USD 송금액 = 달러로 환산된 금액
-    private double usdAmount;
+    private BigDecimal usdAmount;
 
-    // 받는 환율 정보 = currenyCode
+    // 받는 환율 정보 = currecyCode
     private String targetCurrency;
 
     // targetCurrency가 미국이면 미국 환율 일본이면 일본 환율 = basePrice
-    private double exchangeRate;
+    private BigDecimal exchangeRate;
 
     // 받는 금액
-    private double targetAmount;
+    private BigDecimal targetAmount;
 
     // 유저 이름
     private String userId;

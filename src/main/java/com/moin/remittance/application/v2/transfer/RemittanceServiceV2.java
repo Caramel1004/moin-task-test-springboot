@@ -1,7 +1,7 @@
 package com.moin.remittance.application.v2.transfer;
 
-import com.moin.remittance.domain.dto.remittance.v1.TransactionLogDTO;
 import com.moin.remittance.domain.dto.remittance.v2.RemittanceQuoteResponseV2DTO;
+import com.moin.remittance.domain.dto.remittance.v2.TransactionLogV2DTO;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +26,6 @@ public interface RemittanceServiceV2 {
     /**
      * @Return 송금 견적서
      */
-    TransactionLogDTO getRemittanceLogList(String userId);
+    TransactionLogV2DTO getRemittanceLogList(String userId);
 
 }

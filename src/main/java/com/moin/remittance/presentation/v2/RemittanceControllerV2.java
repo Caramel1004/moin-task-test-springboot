@@ -1,8 +1,8 @@
 package com.moin.remittance.presentation.v2;
 
 import com.moin.remittance.application.v2.transfer.RemittanceServiceV2;
-import com.moin.remittance.domain.dto.remittance.v1.TransactionLogDTO;
 import com.moin.remittance.domain.dto.remittance.v2.RemittanceQuoteResponseV2DTO;
+import com.moin.remittance.domain.dto.remittance.v2.TransactionLogV2DTO;
 import com.moin.remittance.domain.dto.requestbody.RemittanceAcceptRequestBodyDTO;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
 import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
@@ -24,7 +24,7 @@ public class RemittanceControllerV2 {
 
     /**
      * EndPoint: GET /api/v2/transfer/quote
-     * 기능: 두나무 오픈 API를 스크래핑해서 환율이 적용된 송금 견적서를 리턴
+     * 기능: 두나무 오픈 API 스크래핑해서 환율이 적용된 송금 견적서를 리턴
      *
      * @RequestParam RemittanceQuoteRequestParamsDTO: 송금 견적서 요청 파라미터
      * @Param String amount: 원화
@@ -58,20 +58,23 @@ public class RemittanceControllerV2 {
         );
     }
 
-    // 회원의 송금 거래 이력
+    /**
+     * EndPoint: GET /api/v2/transfer/list
+     * 기능: 회원의 거래 이력을 리턴하는 API
+     *
+     * @Param MemberDTO: 회원 정보 -> JWT 파싱해서 정보 얻기
+     **/
     @GetMapping(value = "/list")
     public ResponseEntity<HttpResponseBody> getRemittanceLog(@RequestHeader("Authorization") HttpHeaders header) {
         String accessToken = header.getFirst("Authorization").split("Bearer ")[1];
         String userId = "test@test.com";
-        TransactionLogDTO log = remittanceService.getRemittanceLogList(userId);
-
         // Response 처리
         return ResponseEntity.status(SUCCESS_GET_REMITTANCE_LOG.getStatusCode()).body(
-                HttpResponseBody.<TransactionLogDTO>builder()
+                HttpResponseBody.<TransactionLogV2DTO>builder()
                         .statusCode(SUCCESS_GET_REMITTANCE_LOG.getStatusCode())
                         .message(SUCCESS_GET_REMITTANCE_LOG.getMessage())
                         .codeName(SUCCESS_GET_REMITTANCE_LOG.getCodeName())
-                        .data(log)
+                        .data(remittanceService.getRemittanceLogList(userId))
                         .build()
         );
     }
