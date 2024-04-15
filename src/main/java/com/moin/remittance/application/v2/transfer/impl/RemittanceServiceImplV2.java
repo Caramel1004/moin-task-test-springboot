@@ -3,23 +3,23 @@ package com.moin.remittance.application.v2.transfer.impl;
 import com.moin.remittance.application.v2.api.ExchangeRateApiClientV2;
 import com.moin.remittance.application.v2.transfer.RemittanceServiceV2;
 import com.moin.remittance.application.v2.transfer.impl.estimating.Quotation;
+import com.moin.remittance.application.v2.transfer.impl.remitting.RemittancePolicyChecker;
 import com.moin.remittance.dao.MemberDAO;
 import com.moin.remittance.dao.RemittanceDAO;
+import com.moin.remittance.domain.dto.remittance.v2.RemittanceLogV2DTO;
 import com.moin.remittance.domain.dto.remittance.v2.RemittanceQuoteResponseV2DTO;
-import com.moin.remittance.exception.AmountLimitExcessException;
-import com.moin.remittance.exception.ExpirationTimeOverException;
-import com.moin.remittance.exception.InValidPatternTypeException;
-import com.moin.remittance.exception.NegativeNumberException;
+
+
 import com.moin.remittance.domain.dto.remittance.v2.ExchangeRateInfoDTO;
 import com.moin.remittance.domain.dto.remittance.v2.RemittanceQuoteV2DTO;
-import com.moin.remittance.domain.dto.remittance.v1.RemittanceQuoteDTO;
-import com.moin.remittance.domain.dto.remittance.v1.RemittanceLogDTO;
 import com.moin.remittance.domain.dto.remittance.v1.TransactionLogDTO;
 import com.moin.remittance.domain.dto.remittance.v1.RemittanceHistoryDTO;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
 
-
+import com.moin.remittance.exception.NullPointerQuotationException;
+import com.moin.remittance.repository.v2.RemittanceLogRepositoryV2;
 import com.moin.remittance.repository.v2.RemittanceRepositoryV2;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,14 +30,13 @@ import java.util.HashMap;
 import java.util.List;
 
 
-import static com.moin.remittance.domain.vo.HttpResponseCode.*;
-import static com.moin.remittance.util.ExchangeRateCalculator.*;
-
 @Service
 @RequiredArgsConstructor
 public class RemittanceServiceImplV2 implements RemittanceServiceV2 {
 
     private final RemittanceRepositoryV2 remittanceRepositoryV2;
+
+    private final RemittanceLogRepositoryV2 remittanceLogRepositoryV2;
 
     private final RemittanceDAO remittanceDAO;
 
@@ -47,13 +46,14 @@ public class RemittanceServiceImplV2 implements RemittanceServiceV2 {
 
     private final Quotation quotation;
 
+    private final RemittancePolicyChecker remittancePolicyChecker;
+
 
     /**
      * @Parameter RemittanceQuoteRequestParamsDTO: 송금 견적서 요청 파라미터
      * @Param String codes: 통화 코드
      * @Param String amount: 원화
      * @Param String targetCurrency: 타겟 통화
-     *
      * @Return RemittanceQuoteResponseDTO: 송금 견적서
      */
     @Override
@@ -73,54 +73,38 @@ public class RemittanceServiceImplV2 implements RemittanceServiceV2 {
         return RemittanceQuoteResponseV2DTO.of(remittanceRepositoryV2.saveAndFlush(remittanceQuoteDTO.toEntity(remittanceQuoteDTO)));
     }
 
+    /**
+     * @Param long quoteId: 송금 견적서 번호
+     * @Param String userId: 유저 아이디
+     */
     @Override
     @Transactional
-    public void requestRemittanceAccept(long quoteId, String userId) {
+    public void requestRemittanceAccept(long quoteId, String userId) throws NullPointerQuotationException {
+        // 1. 채번한 견적서 id와 일치하는 견적서 조회
+        RemittanceQuoteV2DTO estimation = RemittanceQuoteV2DTO.of(remittanceRepositoryV2.findByQuoteId(quoteId));
 
-        // 1. 유저아이디와 매칭된 송금 거래 이력에서 날짜가 오늘 날짜랑 일치하는 것만 조회해서 송금액 싹 더함
-        long sumOfsourceAmount = remittanceDAO.getSumOfSourceAmount(userId);// 오늘 보낸 총 송금액
-        String memberIdType = memberDAO.getIdTypeByUserId(userId);// 회원 타입
+        ExchangeRateInfoDTO usdExchangeRateDTO =
+                exchangeRateApiClient.fetchExchangeRateInfoFromExternalAPI("FRX.KRWUSD").get("USD");// 지금 현재 달러 환율 -> 외부 API
 
-        // 회원 타입이 저장 안돼 있을 경우 InValidPatternTypeException
-        if(!memberIdType.equalsIgnoreCase("REG_NO") && !memberIdType.equalsIgnoreCase("BUSINESS_NO")) {
-            throw new InValidPatternTypeException(BAD_NOT_FOUND_ID_TYPE);
-        }
+        // 2. 송금 정책 체크
+        remittancePolicyChecker.policyChecking(userId, estimation, usdExchangeRateDTO);
 
-        BigDecimal usdExchangeRate = exchangeRateApiClient.fetchExchangeRateInfoFromExternalAPI("FRX.KRWUSD").get("USD").getBasePrice();// 지금 현재 달러 환율 -> 외부 API
-        double usdSourceAmountNotToFee = calculateExchangeRate(sumOfsourceAmount, Double.parseDouble(String.valueOf(usdExchangeRate)));// 수수료없는 순수 원화를 달러로 환산
 
-        // 2. 유저의 보낸금액의 총합이 이미 한도액을 넘었는지 비교
-        // 개인 회원 $1000, 법인 회원 $5000
-        if (usdSourceAmountNotToFee > 1000.0 && memberIdType.equalsIgnoreCase("REG_NO")) {
-            throw new AmountLimitExcessException(BAD_INDIVIDUAL_MEMBER_LIMIT_EXCESS);
-        }
+//        // 5. 만료 기간 체크
+//        if (isExpirationTimeOver(quoteDTO.getExpireTime())) {         // 만료 시간 체크
+//            throw new ExpirationTimeOverException(BAD_QUOTE_EXPIRATION_TIME_OVER);
+//        }
 
-        if(usdSourceAmountNotToFee > 5000.0 && memberIdType.equalsIgnoreCase("BUSINESS_NO")) {
-            throw new AmountLimitExcessException(BAD_CORPORATION_MEMBER_LIMIT_EXCESS);
-        }
-
-        // 3. 채번한 견적서 id와 일치하는 견적서 조회
-        RemittanceQuoteDTO quoteDTO = remittanceDAO.findRemittanceQuoteByQuoteId(quoteId);
-        double usdAmountNotToFee = calculateExchangeRate(quoteDTO.getSourceAmount(), quoteDTO.getUsdExchangeRate());// 견적서에 기록된 송금액에 수수료 적용 안된 달러 환율 적용
-
-        // 4. 현재금액과 보낸금액의 합을 한도액과 비교 -> 현재 환율이랑 견적서에 찍혔던 USD 환율이 다르기 때문에 따로 분류해서 구함
-        // 개인 회원 $1000, 법인 회원 $5000
-        if (usdSourceAmountNotToFee + usdAmountNotToFee > 1000.0 && memberIdType.equalsIgnoreCase("REG_NO")) { // 견적서에 있는 달러 환율 적용
-            throw new AmountLimitExcessException(BAD_INDIVIDUAL_MEMBER_LIMIT_EXCESS);
-        }
-
-        // 5. 만료 기간 체크
-        if (isExpirationTimeOver(quoteDTO.getExpireTime())) {         // 만료 시간 체크
-            throw new ExpirationTimeOverException(BAD_QUOTE_EXPIRATION_TIME_OVER);
-        }
-
-        /* 6. 송금 견적서 데이터 송금 요청 이력으로 저장
-         * @param remittanceQuoteDTO 송금 견적서 DTO
-         * @param userId 유저 아이디
-         * @param requestedDate 요청 날짜
+        /* 3. 송금 견적서 데이터 송금 요청 이력으로 저장
+         * 거래 이력에 송금할 견적서와 유저 아이디 요청날짜 저장할 데이터
          * */
-        RemittanceLogDTO log = new RemittanceLogDTO(quoteDTO, userId, OffsetDateTime.now());// 거래 이력에 송금할 견적서와 유저 아이디 요청날짜 저장할 데이터
-        remittanceDAO.saveRemittanceLog(log);
+        RemittanceLogV2DTO log = RemittanceLogV2DTO.builder()
+                .userId(userId)
+                .remittanceQuoteV2DTO(estimation)
+                .requestedDate(OffsetDateTime.now())
+                .build();
+
+        remittanceLogRepositoryV2.saveAndFlush(log.toEntity(log));
     }
 
     @Override

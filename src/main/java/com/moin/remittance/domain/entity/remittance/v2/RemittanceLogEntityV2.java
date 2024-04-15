@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 @NoArgsConstructor
@@ -27,15 +28,15 @@ public class RemittanceLogEntityV2 {
 
     // 적용된 수수료
     @Column(name = "fee", nullable = false)
-    private double fee;
+    private BigDecimal fee;
 
     // USD 환율(base price)
     @Column(name = "usd_exchange_rate", nullable = false)
-    private double usdExchangeRate;
+    private BigDecimal usdExchangeRate;
 
     // USD 송금액
     @Column(name = "usd_amount", nullable = false)
-    private double usdAmount;
+    private BigDecimal usdAmount;
 
     // 받는 환율 정보
     @Column(name = "target_currency", nullable = false)
@@ -43,11 +44,11 @@ public class RemittanceLogEntityV2 {
 
     // targetCurrency가 미국이면 미국 환율 일본이면 일본 환율
     @Column(name = "exchange_rate", nullable = false)
-    private double exchangeRate;
+    private BigDecimal exchangeRate;
 
     // 받는 금액
     @Column(name = "target_amount", nullable = false)
-    private double targetAmount;
+    private BigDecimal targetAmount;
 
 
     @Column(name = "requested_date", nullable = false)
@@ -56,18 +57,4 @@ public class RemittanceLogEntityV2 {
 
     @Column(name = "user_id", nullable = false)
     private String userId;
-
-    public RemittanceLogEntityV2 toEntity (RemittanceLogDTO dto) {
-        return RemittanceLogEntityV2.builder()
-                .sourceAmount(dto.getRemittanceQuoteDTO().getSourceAmount())
-                .fee(dto.getRemittanceQuoteDTO().getFee())
-                .usdExchangeRate(dto.getRemittanceQuoteDTO().getUsdExchangeRate())
-                .usdAmount(dto.getRemittanceQuoteDTO().getUsdAmount())
-                .targetCurrency(dto.getRemittanceQuoteDTO().getTargetCurrency())
-                .targetAmount(dto.getRemittanceQuoteDTO().getTargetAmount())
-                .exchangeRate(dto.getRemittanceQuoteDTO().getExchangeRate())
-                .requestedDate(dto.getRequestedDate())
-                .userId(dto.getUserId())
-                .build();
-    }
 }

@@ -1,11 +1,11 @@
 package com.moin.remittance.application.v2.user.impl;
 
-import com.moin.remittance.dao.MemberDAO;
 import com.moin.remittance.exception.DuplicateUserIdException;
 import com.moin.remittance.exception.InValidPatternTypeException;
 import com.moin.remittance.exception.NotFoundMemberException;
 import com.moin.remittance.domain.dto.member.MemberDTO;
 import com.moin.remittance.application.v2.user.MemberServiceV2;
+import com.moin.remittance.repository.v2.MemberRepositoryV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImplV2 implements MemberServiceV2 {
-    private final MemberDAO memberDAO;
+    private final MemberRepositoryV2 memberRepositoryV2;
 
     @Value("${jwt.token.secret}")
     private String key;
@@ -53,20 +53,19 @@ public class MemberServiceImplV2 implements MemberServiceV2 {
         }
 
         // 3. 회원 중복 조회
-        boolean isExistingUserId = memberDAO.hasUser(member.getUserId());
+        boolean isExistingUserId = memberRepositoryV2.existsByUserId(member.getUserId());
 
         if (isExistingUserId) {
             throw new DuplicateUserIdException(BAD_DUPLICATE_USERID_INVALID_USERID);
         }
         // 4. memberDTO 대로 유저 저장
-        memberDAO.saveUser(member);
-
+        memberRepositoryV2.saveAndFlush(member.toEntity(member));
     }
 
     @Override
     public String getAuthToken(String userId, String password) {
         // 유저 존재 여부 체크
-        boolean hasUser = memberDAO.hasUser(userId, password);
+        boolean hasUser = memberRepositoryV2.existsByUserIdAndPassword(userId, password);
 
         if (!hasUser) {    // 찾은 유저가 없으면 throw
             throw new NotFoundMemberException(BAD_NOT_MATCH_MEMBER);

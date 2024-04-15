@@ -18,14 +18,11 @@ public class ExchangeRateCalculator {
         BigDecimal targetCurrencyToKrwExchangeRate = basePrice.divide(new BigDecimal(currencyUnit), 4, RoundingMode.HALF_UP);// 소수점 넷째자리에서 반올림
         int decimalPlaces = Currency.getInstance(currencyCode).getDefaultFractionDigits();
 
-
-        BigDecimal targetAmount = krw.divide(targetCurrencyToKrwExchangeRate, decimalPlaces, RoundingMode.HALF_UP);
-
-        if (targetAmount.compareTo(new BigDecimal(0)) <= 0) {
-            throw new NegativeNumberException(BAD_NEGATIVE_TARGET_AMOUNT);
-        }
+//        if (targetAmount.compareTo(new BigDecimal(0)) <= 0) {
+//            throw new NegativeNumberException(BAD_NEGATIVE_TARGET_AMOUNT);
+//        }
 
         // 자릿수 getDefaultFractionDigits
-        return targetAmount;
+        return krw.divide(targetCurrencyToKrwExchangeRate, decimalPlaces, RoundingMode.HALF_UP);
     }
 }

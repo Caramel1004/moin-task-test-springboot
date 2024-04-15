@@ -88,7 +88,7 @@ public class RemittanceServiceImpl implements RemittanceServiceV1 {
     public void requestRemittanceAccept(long quoteId, String userId) {
 
         // 1. 유저아이디와 매칭된 송금 거래 이력에서 날짜가 오늘 날짜랑 일치하는 것만 조회해서 송금액 싹 더함
-        long sumOfsourceAmount = remittanceDAO.getSumOfSourceAmount(userId);// 오늘 보낸 총 송금액
+        long sumOfSourceAmount = remittanceDAO.getSumOfSourceAmount(userId);// 오늘 보낸 총 송금액
         String memberIdType = memberDAO.getIdTypeByUserId(userId);// 회원 타입
 
         // 회원 타입이 저장 안돼 있을 경우 InValidPatternTypeException
@@ -97,7 +97,7 @@ public class RemittanceServiceImpl implements RemittanceServiceV1 {
         }
 
         double usdExchangeRate = webClientServiceV1.fetchExchangeRateInfoFromExternalAPI("FRX.KRWUSD").get("USD").getBasePrice();// 지금 현재 달러 환율 -> 외부 API
-        double usdSourceAmountNotToFee = calculateExchangeRate(sumOfsourceAmount, usdExchangeRate);// 수수료없는 순수 원화를 달러로 환산
+        double usdSourceAmountNotToFee = calculateExchangeRate(sumOfSourceAmount, usdExchangeRate);// 수수료없는 순수 원화를 달러로 환산
 
         // 2. 유저의 보낸금액의 총합이 이미 한도액을 넘었는지 비교
         // 개인 회원 $1000, 법인 회원 $5000

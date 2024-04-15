@@ -1,6 +1,8 @@
 package com.moin.remittance.repository;
 
 import com.moin.remittance.domain.entity.member.v1.MemberEntity;
+import com.moin.remittance.domain.entity.member.v2.MemberEntityV2;
+import com.moin.remittance.repository.v2.MemberRepositoryV2;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class MemberRepositoryTest {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberRepositoryV2 memberRepository;
 
     /**
      * 회원가입
@@ -32,7 +34,7 @@ public class MemberRepositoryTest {
     @DisplayName("회원 가입 데이터 저장")
     public void saveUserTest() {
         // given: 회원 엔티티
-        MemberEntity member = MemberEntity.builder()
+        MemberEntityV2 member = MemberEntityV2.builder()
                 .userId("test@test.com")
                 .password("1234")
                 .name("카라멜프라프치노")
@@ -41,7 +43,7 @@ public class MemberRepositoryTest {
                 .build();
 
         // when: 회원 저장
-        MemberEntity memberEntity = memberRepository.save(member);
+        MemberEntityV2 memberEntity = memberRepository.save(member);
 
         // then: junit 메소드로 값 비교
         assertEquals(member.getUserId(), memberEntity.getUserId()); // 회원 아이디(이메일 형식)
@@ -62,7 +64,7 @@ public class MemberRepositoryTest {
     @DisplayName("회원 가입 데이터 저장 -> 회원 조회")
     public void createUserAndExistsUserTest() {
         // given: 회원 엔티티 생성
-        MemberEntity member = MemberEntity.builder()
+        MemberEntityV2 member = MemberEntityV2.builder()
                 .userId("test@test.com")
                 .password("1234")
                 .name("카라멜프라프치노")
@@ -71,7 +73,7 @@ public class MemberRepositoryTest {
                 .build();
 
         // when: 회원 저장
-        MemberEntity memberEntity = memberRepository.save(member);
+        MemberEntityV2 memberEntity = memberRepository.saveAndFlush(member);
 
         // then: junit 메소드로 타겟 값과 저장된 값 비교
         assertEquals(member.getUserId(), memberEntity.getUserId()); // 회원 아이디(이메일 형식)

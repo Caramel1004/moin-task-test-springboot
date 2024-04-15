@@ -34,13 +34,13 @@ public class MemberEntityV2 {
     @Column(name = "ID_VALUE", nullable = false)
     private String idValue;
 
-    public MemberEntityV2 toEntity(MemberDTO dto) {
-        return MemberEntityV2.builder()
-                .userId(dto.getUserId())
-                .password(dto.getPassword())
-                .name(dto.getName())
-                .idType(dto.getIdType())
-                .idValue(dto.getIdValue())
-                .build();
-    }
+//    public MemberEntityV2 toEntity(MemberDTO dto) {
+//        return MemberEntityV2.builder()
+//                .userId(dto.getUserId())
+//                .password(dto.getPassword())
+//                .name(dto.getName())
+//                .idType(dto.getIdType())
+//                .idValue(dto.getIdValue())
+//                .build();
+//    }
 }
