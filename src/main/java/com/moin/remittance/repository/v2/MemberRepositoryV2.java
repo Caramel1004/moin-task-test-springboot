@@ -11,5 +11,4 @@ public interface MemberRepositoryV2 extends JpaRepository<MemberEntityV2, Long> 
     boolean existsByUserIdAndPassword(String userId, String password);
 
     MemberEntityV2 findByUserId(String userId);
-
 }

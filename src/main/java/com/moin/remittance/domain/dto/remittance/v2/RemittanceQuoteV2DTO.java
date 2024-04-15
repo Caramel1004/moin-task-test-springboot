@@ -1,6 +1,7 @@
 package com.moin.remittance.domain.dto.remittance.v2;
 
 import com.moin.remittance.domain.entity.remittance.v2.RemittanceQuoteEntityV2;
+import com.moin.remittance.exception.NullPointerQuotationException;
 import lombok.Builder;
 import lombok.Getter;
 

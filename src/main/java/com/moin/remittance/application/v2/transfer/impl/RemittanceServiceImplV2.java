@@ -16,6 +16,7 @@ import com.moin.remittance.domain.dto.remittance.v1.TransactionLogDTO;
 import com.moin.remittance.domain.dto.remittance.v1.RemittanceHistoryDTO;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
 
+import com.moin.remittance.exception.NullPointerQuotationException;
 import com.moin.remittance.repository.v2.RemittanceLogRepositoryV2;
 import com.moin.remittance.repository.v2.RemittanceRepositoryV2;
 
@@ -78,7 +79,7 @@ public class RemittanceServiceImplV2 implements RemittanceServiceV2 {
      */
     @Override
     @Transactional
-    public void requestRemittanceAccept(long quoteId, String userId) {
+    public void requestRemittanceAccept(long quoteId, String userId) throws NullPointerQuotationException {
         // 1. 채번한 견적서 id와 일치하는 견적서 조회
         RemittanceQuoteV2DTO estimation = RemittanceQuoteV2DTO.of(remittanceRepositoryV2.findByQuoteId(quoteId));
 

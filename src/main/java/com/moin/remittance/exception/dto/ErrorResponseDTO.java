@@ -60,11 +60,15 @@ public class ErrorResponseDTO {
         this.code = e.getCode();
         this.message = e.getMessage();
     }
+    public ErrorResponseDTO(NullPointerQuotationException e) {
+        this.codeName = e.getCodeName();
+        this.code = e.getCode();
+        this.message = e.getMessage();
+    }
+
     public ErrorResponseDTO(HttpResponseCode errorCode) {
         this.codeName = errorCode.getCodeName();
         this.code = errorCode.getStatusCode();
         this.message = errorCode.getMessage();
     }
-
-
 }

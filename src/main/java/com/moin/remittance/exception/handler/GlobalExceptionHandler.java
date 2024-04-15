@@ -102,4 +102,12 @@ public class GlobalExceptionHandler {
         responseBody.put("result", new ErrorResponseDTO(e));
         return ResponseEntity.status(e.getCode()).body(responseBody);
     }
+
+    @ExceptionHandler(NullPointerQuotationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<HashMap<String, ErrorResponseDTO>> nullPointerQuotationException(NullPointerQuotationException e) {
+        HashMap<String, ErrorResponseDTO> responseBody = new HashMap<String, ErrorResponseDTO>();
+        responseBody.put("result", new ErrorResponseDTO(e));
+        return ResponseEntity.status(e.getCode()).body(responseBody);
+    }
 }
