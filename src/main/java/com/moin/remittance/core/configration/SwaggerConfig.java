@@ -15,7 +15,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         Info info = new Info()
-                .version("V1")
+                .version("V2")
                 .title("모인 백엔드 API")
                 .description("모인 백엔드 API 과제 테스트");
 
