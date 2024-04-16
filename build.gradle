@@ -47,10 +47,10 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 
 	// Security
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
-//	runtimeOnly 'org.springframework.boot:spring-boot-starter-security'
-//	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-//	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	runtimeOnly 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+	testImplementation 'org.springframework.security:spring-security-test'
 
 	// Config
 	implementation 'org.springframework.boot:spring-boot-configuration-processor'
