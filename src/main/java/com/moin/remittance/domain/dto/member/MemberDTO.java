@@ -2,13 +2,11 @@ package com.moin.remittance.domain.dto.member;
 
 import com.moin.remittance.domain.entity.member.v2.MemberEntityV2;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-@AllArgsConstructor
 public class MemberDTO {
     /*
     * @NotEmpty - null, ""을 허용하지 않는다. " "는 허용한다.
@@ -33,14 +31,4 @@ public class MemberDTO {
 
     @NotBlank(message = "개인 회원은 주민등록번호, 법인 회원은 사업자번호가 필수 입니다.")
     private String idValue;
-
-    public MemberEntityV2 toEntity(MemberDTO dto) {
-        return MemberEntityV2.builder()
-                .userId(dto.getUserId())
-                .password(dto.getPassword())
-                .name(dto.getName())
-                .idType(dto.getIdType())
-                .idValue(dto.getIdType())
-                .build();
-    }
 }
