@@ -1,5 +1,6 @@
 package com.moin.remittance.application.v2.user.impl;
 
+import com.moin.remittance.domain.entity.member.v2.MemberEntityV2;
 import com.moin.remittance.exception.DuplicateUserIdException;
 import com.moin.remittance.exception.InValidPatternTypeException;
 import com.moin.remittance.exception.NotFoundMemberException;
@@ -8,6 +9,7 @@ import com.moin.remittance.application.v2.user.MemberServiceV2;
 import com.moin.remittance.repository.v2.MemberRepositoryV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -21,6 +23,7 @@ import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 @RequiredArgsConstructor
 public class MemberServiceImplV2 implements MemberServiceV2 {
     private final MemberRepositoryV2 memberRepositoryV2;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Value("${jwt.token.secret}")
     private String key;
@@ -58,8 +61,15 @@ public class MemberServiceImplV2 implements MemberServiceV2 {
         if (isExistingUserId) {
             throw new DuplicateUserIdException(BAD_DUPLICATE_USERID_INVALID_USERID);
         }
-        // 4. memberDTO 대로 유저 저장
-        memberRepositoryV2.saveAndFlush(member.toEntity(member));
+
+        // 4. 비밀번호, 주민등록번호 or 사업자등록번호 암호화해서 저장
+        memberRepositoryV2.saveAndFlush(MemberEntityV2.builder()
+                .userId(member.getUserId())
+                .password(bCryptPasswordEncoder.encode(member.getPassword()))
+                .name(member.getName())
+                .idType(member.getIdType())
+                .idValue(bCryptPasswordEncoder.encode(member.getIdValue()))
+                .build());
     }
 
     @Override
