@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NegativeNumberException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<HttpResponseBody> negativeNumberExceptionHandler(NegativeNumberException e) {
+    public ResponseEntity<HttpResponseBody<?>> negativeNumberExceptionHandler(NegativeNumberException e) {
         return ResponseEntity.status(e.getCode()).body(
                 HttpResponseBody.<TransactionLogDTO>builder()
                         .statusCode(e.getCode())
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ExternalAPIException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<HttpResponseBody> externalAPIExceptionHandler(ExternalAPIException e) {
+    public ResponseEntity<HttpResponseBody<?>> externalAPIExceptionHandler(ExternalAPIException e) {
         return ResponseEntity.status(e.getCode()).body(
                 HttpResponseBody.<TransactionLogDTO>builder()
                         .statusCode(e.getCode())

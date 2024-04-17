@@ -31,7 +31,7 @@ public class RemittanceControllerV2 {
      * @Param String targetCurrency: 타겟 통화
      **/
     @GetMapping(value = "/quote", headers = "API-Version=2")
-    public ResponseEntity<HttpResponseBody> getRemittanceQuoteV2(@Valid RemittanceQuoteRequestParamsDTO requestParams) {
+    public ResponseEntity<HttpResponseBody<RemittanceQuoteResponseV2DTO>> getRemittanceQuoteV2(@Valid RemittanceQuoteRequestParamsDTO requestParams) {
         return ResponseEntity.status(SUCCESS_GET_REMITTANCE_QUOTE.getStatusCode()).body(
                 HttpResponseBody.<RemittanceQuoteResponseV2DTO>builder()
                         .statusCode(SUCCESS_GET_REMITTANCE_QUOTE.getStatusCode())
@@ -44,7 +44,7 @@ public class RemittanceControllerV2 {
 
     // 송금 접수 요청
     @PostMapping(value = "/request")
-    public ResponseEntity<HttpResponseBody> requestRemittanceAccept(@RequestBody RemittanceAcceptRequestBodyDTO requestBody,
+    public ResponseEntity<HttpResponseBody<?>> requestRemittanceAccept(@RequestBody RemittanceAcceptRequestBodyDTO requestBody,
                                                                     @RequestHeader("Authorization") HttpHeaders header) {
         // 송금 접수 요청
         remittanceService.requestRemittanceAccept(requestBody.getQuoteId(), "test@test.com");
@@ -54,6 +54,7 @@ public class RemittanceControllerV2 {
                 HttpResponseBody.builder()
                         .statusCode(SUCCESS_REQUEST_REMITTANCE_ACCEPT.getStatusCode())
                         .message(SUCCESS_REQUEST_REMITTANCE_ACCEPT.getMessage())
+                        .codeName(SUCCESS_REQUEST_REMITTANCE_ACCEPT.getCodeName())
                         .build()
         );
     }
@@ -65,7 +66,7 @@ public class RemittanceControllerV2 {
      * @Param MemberDTO: 회원 정보 -> JWT 파싱해서 정보 얻기
      **/
     @GetMapping(value = "/list")
-    public ResponseEntity<HttpResponseBody> getRemittanceLog(@RequestHeader("Authorization") HttpHeaders header) {
+    public ResponseEntity<HttpResponseBody<TransactionLogV2DTO>> getRemittanceLog(@RequestHeader("Authorization") HttpHeaders header) {
         String accessToken = header.getFirst("Authorization").split("Bearer ")[1];
         String userId = "test@test.com";
         // Response 처리

@@ -1,13 +1,13 @@
 package com.moin.remittance.service;
 
-import com.moin.remittance.application.v2.api.impl.ExchangeRateApiClientV2;
+import com.moin.remittance.application.v2.api.impl.ExchangeRateApiClientImplV2;
 import com.moin.remittance.domain.dto.remittance.v1.ExchangeRateInfoDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.reactive.function.client.WebClient;
 
-@SpringBootTest(classes = ExchangeRateApiClientV2.class)
+@SpringBootTest(classes = ExchangeRateApiClientImplV2.class)
 public class WebClientServiceImplV1Test {
 
     @Test

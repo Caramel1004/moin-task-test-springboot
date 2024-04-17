@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
-public class AuthenticationConfig {
+public class SpringSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -45,7 +45,7 @@ public class AuthenticationConfig {
 
                         CorsConfiguration config = new CorsConfiguration();
 
-                        config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        config.setAllowedOrigins(Collections.singletonList("http://localhost:8080"));
                         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "OPTIONS"));
                         config.setAllowCredentials(true);
                         config.setAllowedHeaders(Collections.singletonList("*"));
@@ -69,7 +69,7 @@ public class AuthenticationConfig {
          * 로그인과 회원가입은 허용해주어야 인증되지 않은 회원이 서비스를 이용할 수 있도록 하는 엔드포인트 이기때문에 이 두개의 엔드포인트는 허용해줍니다.
          * */
         httpSecurity.authorizeHttpRequests(req -> req
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
 //                .requestMatchers("/api/v1/signup", "/api/v1/test", "/h2-console").permitAll()
 //                .requestMatchers("/h2-console").permitAll()
         );

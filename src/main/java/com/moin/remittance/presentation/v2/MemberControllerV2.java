@@ -30,7 +30,7 @@ public class MemberControllerV2 {
      * name : 이름
      * */
     @PostMapping(value = "/signup")
-    public ResponseEntity<HttpResponseBody> signup(@RequestBody @Valid MemberDTO memberDTO) {
+    public ResponseEntity<HttpResponseBody<?>> signup(@RequestBody @Valid MemberDTO memberDTO) {
 
         // 유저 추가
         memberService.saveUser(memberDTO);
@@ -46,7 +46,7 @@ public class MemberControllerV2 {
 
     // 로그인
     @PostMapping(value = "/login")
-    public ResponseEntity<HttpResponseBody> login(@RequestBody @Valid MemberLoginRequestBodyDTO memberDTO) {
+    public ResponseEntity<HttpResponseBody<String>> login(@RequestBody @Valid MemberLoginRequestBodyDTO memberDTO) {
 
         String token = memberService.getAuthToken(memberDTO.getUserId(), memberDTO.getPassword());
 

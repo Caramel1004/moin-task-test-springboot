@@ -30,7 +30,7 @@ public class MemberServiceImplV2 implements MemberServiceV2 {
 
     @Override
     public void saveUser(MemberDTO member) {
-        // id type에 따른 id value 정규표현식 체크
+        // 1. id type에 따른 id value 정규표현식 체크
         String RESIDENT_NUMBER_REGEX = "\\d{6}-\\d{7}";
         String BUSINESS_NUMBER_REGEX = "\\d{3}-\\d{2}-\\d{5}";
 
@@ -55,14 +55,14 @@ public class MemberServiceImplV2 implements MemberServiceV2 {
                 throw new InValidPatternTypeException(BAD_REQUEST_BODY_INVALID_ERROR);// @valid에서 체킹 하지만 혹시 모를 예외 상황 대비
         }
 
-        // 3. 회원 중복 조회
+        // 2. 회원 중복 조회
         boolean isExistingUserId = memberRepositoryV2.existsByUserId(member.getUserId());
 
         if (isExistingUserId) {
             throw new DuplicateUserIdException(BAD_DUPLICATE_USERID_INVALID_USERID);
         }
 
-        // 4. 비밀번호, 주민등록번호 or 사업자등록번호 암호화해서 저장
+        // 3. 비밀번호, 주민등록번호 or 사업자등록번호 암호화해서 저장
         memberRepositoryV2.saveAndFlush(MemberEntityV2.builder()
                 .userId(member.getUserId())
                 .password(bCryptPasswordEncoder.encode(member.getPassword()))
