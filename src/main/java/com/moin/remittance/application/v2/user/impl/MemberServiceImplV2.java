@@ -71,17 +71,4 @@ public class MemberServiceImplV2 implements MemberServiceV2 {
                 .idValue(bCryptPasswordEncoder.encode(member.getIdValue()))
                 .build());
     }
-
-    @Override
-    public String getAuthToken(String userId, String password) {
-        // 유저 존재 여부 체크
-        boolean hasUser = memberRepositoryV2.existsByUserIdAndPassword(userId, password);
-
-        if (!hasUser) {    // 찾은 유저가 없으면 throw
-            throw new NotFoundMemberException(BAD_NOT_MATCH_MEMBER);
-        }
-
-//        return JwtUtil.createToken(userId, key, 30);
-        return "아직 토큰 구현 안됨";
-    }
 }
