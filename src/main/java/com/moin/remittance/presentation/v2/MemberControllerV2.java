@@ -2,17 +2,12 @@ package com.moin.remittance.presentation.v2;
 
 import com.moin.remittance.application.v2.user.MemberServiceV2;
 import com.moin.remittance.domain.dto.member.MemberDTO;
-import com.moin.remittance.domain.dto.requestbody.MemberLoginRequestBodyDTO;
 import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static com.moin.remittance.domain.vo.HttpResponseCode.SUCCESS_MEMBER_LOGIN;
 import static com.moin.remittance.domain.vo.HttpResponseCode.SUCCESS_MEMBER_SIGNUP;
 
 
@@ -43,21 +38,4 @@ public class MemberControllerV2 {
                         .build()
         );
     }
-
-    // 로그인
-    @PostMapping(value = "/login")
-    public ResponseEntity<HttpResponseBody<String>> login(@RequestBody @Valid MemberLoginRequestBodyDTO memberDTO) {
-
-        String token = memberService.getAuthToken(memberDTO.getUserId(), memberDTO.getPassword());
-
-        return ResponseEntity.status(SUCCESS_MEMBER_LOGIN.getStatusCode()).body(
-                HttpResponseBody.<String>builder()
-                        .statusCode(SUCCESS_MEMBER_LOGIN.getStatusCode())
-                        .message(SUCCESS_MEMBER_LOGIN.getMessage())
-                        .codeName(SUCCESS_MEMBER_LOGIN.getCodeName())
-                        .data(token)
-                        .build()
-        );
-    }
-
 }
