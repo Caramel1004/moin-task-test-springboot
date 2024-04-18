@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
+@Component
 @Entity
 @Table(name = "member_v2")
 public class MemberEntityV2 {
@@ -33,14 +35,4 @@ public class MemberEntityV2 {
 
     @Column(name = "ID_VALUE", nullable = false)
     private String idValue;
-
-//    public MemberEntityV2 toEntity(MemberDTO dto) {
-//        return MemberEntityV2.builder()
-//                .userId(dto.getUserId())
-//                .password(dto.getPassword())
-//                .name(dto.getName())
-//                .idType(dto.getIdType())
-//                .idValue(dto.getIdValue())
-//                .build();
-//    }
 }
