@@ -110,4 +110,19 @@ public class GlobalExceptionHandler {
         responseBody.put("result", new ErrorResponseDTO(e));
         return ResponseEntity.status(e.getCode()).body(responseBody);
     }
+
+    @ExceptionHandler(InValidRequestHeaderException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<HashMap<String, ErrorResponseDTO>> inValidRequestHeaderException(InValidRequestHeaderException e) {
+        HashMap<String, ErrorResponseDTO> responseBody = new HashMap<String, ErrorResponseDTO>();
+        responseBody.put("result", new ErrorResponseDTO(e));
+        return ResponseEntity.status(e.getCode()).body(responseBody);
+    }
+    @ExceptionHandler(UnAuthorizationJwtException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<HashMap<String, ErrorResponseDTO>> unAuthorizationJwtException(UnAuthorizationJwtException e) {
+        HashMap<String, ErrorResponseDTO> responseBody = new HashMap<String, ErrorResponseDTO>();
+        responseBody.put("result", new ErrorResponseDTO(e));
+        return ResponseEntity.status(e.getCode()).body(responseBody);
+    }
 }

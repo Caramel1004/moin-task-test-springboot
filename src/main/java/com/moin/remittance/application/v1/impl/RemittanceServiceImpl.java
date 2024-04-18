@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.moin.remittance.domain.vo.HttpResponseCode.*;
-import static com.moin.remittance.util.ExchangeRateCalculator.*;
+import static com.moin.remittance.application.v1.util.ExchangeRateCalculator.*;
 
 @Service
 @RequiredArgsConstructor

@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import static com.moin.remittance.domain.vo.HttpResponseCode.*;
@@ -44,10 +45,12 @@ public class RemittanceControllerV2 {
 
     // 송금 접수 요청
     @PostMapping(value = "/request")
-    public ResponseEntity<HttpResponseBody<?>> requestRemittanceAccept(@RequestBody RemittanceAcceptRequestBodyDTO requestBody,
-                                                                    @RequestHeader("Authorization") HttpHeaders header) {
+    public ResponseEntity<HttpResponseBody<?>> requestRemittanceAccept(@RequestBody RemittanceAcceptRequestBodyDTO requestBody) {
+
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+
         // 송금 접수 요청
-        remittanceService.requestRemittanceAccept(requestBody.getQuoteId(), "test@test.com");
+        remittanceService.requestRemittanceAccept(requestBody.getQuoteId(), userId);
 
         // Response 처리
         return ResponseEntity.status(SUCCESS_REQUEST_REMITTANCE_ACCEPT.getStatusCode()).body(
@@ -66,9 +69,10 @@ public class RemittanceControllerV2 {
      * @Param MemberDTO: 회원 정보 -> JWT 파싱해서 정보 얻기
      **/
     @GetMapping(value = "/list")
-    public ResponseEntity<HttpResponseBody<TransactionLogV2DTO>> getRemittanceLog(@RequestHeader("Authorization") HttpHeaders header) {
-        String accessToken = header.getFirst("Authorization").split("Bearer ")[1];
-        String userId = "test@test.com";
+    public ResponseEntity<HttpResponseBody<TransactionLogV2DTO>> getRemittanceLog() {
+
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+
         // Response 처리
         return ResponseEntity.status(SUCCESS_GET_REMITTANCE_LOG.getStatusCode()).body(
                 HttpResponseBody.<TransactionLogV2DTO>builder()

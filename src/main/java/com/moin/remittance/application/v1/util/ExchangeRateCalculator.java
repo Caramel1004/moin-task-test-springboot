@@ -1,4 +1,4 @@
-package com.moin.remittance.util;
+package com.moin.remittance.application.v1.util;
 
 import org.springframework.stereotype.Component;
 

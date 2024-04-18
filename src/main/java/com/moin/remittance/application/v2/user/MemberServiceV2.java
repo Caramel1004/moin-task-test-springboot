@@ -6,6 +6,4 @@ import org.springframework.stereotype.Service;
 @Service
 public interface MemberServiceV2 {
     void saveUser(MemberDTO dto);
-
-    String getAuthToken(String userId, String password);
 }
