@@ -32,6 +32,15 @@ public enum HttpResponseCode {
     /* 4xx */
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 인증토큰 입니다.", "UNAUTHORIZED"),
 
+    /**
+     * 인증 토큰 관련 에러 코드: 4xx
+     **/
+    BAD_REQUEST_HEADER(HttpStatus.BAD_REQUEST.value(), "잘못된 요청 헤더 입니다.", "BAD_REQUEST_HEADER"),
+    UNAUTHORIZED_PAYLOAD_MEMBER_DATA(HttpStatus.UNAUTHORIZED.value(), "토큰에 저장된 유저 정보가 잘못되었습니다.", "UNAUTHORIZED_PAYLOAD_MEMBER_DATA"),
+    UNAUTHORIZED_EXPIRED_JWT(HttpStatus.UNAUTHORIZED.value(), "만료된 토큰 입니다.", "UNAUTHORIZED_EXPIRED_JWT"),
+    UNAUTHORIZED_MALFORMED_JWT(HttpStatus.UNAUTHORIZED.value(), "잘못된 접근 토큰 입니다.", "UNAUTHORIZED_MALFORMED_JWT"),
+    UNAUTHORIZED_NOT_EXIST_JWT(HttpStatus.UNAUTHORIZED.value(), "인증 토큰이 없습니다.", "UNAUTHORIZED_NOT_EXIST_JWT"),
+
     // 송금 견적서 요청 관련 에러코드
     BAD_NEGATIVE_AMOUNT(HttpStatus.BAD_REQUEST.value(), "송금액을 양수로 입력 해주세요.", "BAD_NEGATIVE_AMOUNT"),
     BAD_NEGATIVE_TARGET_AMOUNT(HttpStatus.BAD_REQUEST.value(), "받는 금액이 음수 입니다.", "BAD_NEGATIVE_TARGET_AMOUNT"),
