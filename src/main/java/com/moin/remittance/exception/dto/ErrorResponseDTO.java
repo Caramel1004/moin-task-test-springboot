@@ -3,9 +3,14 @@ package com.moin.remittance.exception.dto;
 
 import com.moin.remittance.domain.vo.HttpResponseCode;
 import com.moin.remittance.exception.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 @Data
+@Builder
+@AllArgsConstructor
 public class ErrorResponseDTO {
     private String codeName;
     private int code;
@@ -60,7 +65,20 @@ public class ErrorResponseDTO {
         this.code = e.getCode();
         this.message = e.getMessage();
     }
+
     public ErrorResponseDTO(NullPointerQuotationException e) {
+        this.codeName = e.getCodeName();
+        this.code = e.getCode();
+        this.message = e.getMessage();
+    }
+
+    public ErrorResponseDTO(InValidRequestHeaderException e) {
+        this.codeName = e.getCodeName();
+        this.code = e.getCode();
+        this.message = e.getMessage();
+    }
+
+    public ErrorResponseDTO(UnAuthorizationJwtException e) {
         this.codeName = e.getCodeName();
         this.code = e.getCode();
         this.message = e.getMessage();
