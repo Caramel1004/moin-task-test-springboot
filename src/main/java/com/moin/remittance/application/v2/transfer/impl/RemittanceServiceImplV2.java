@@ -122,7 +122,12 @@ public class RemittanceServiceImplV2 implements RemittanceServiceV2 {
                                 .reduce(BigDecimal::add)
                                 .orElse(new BigDecimal(0))
                 )
-                .todayTransferCount(remittanceHistory.size())
+                .todayTransferCount(
+                        remittanceHistory.stream()
+                                .filter(e -> e.getRequestedDate().isEqual(OffsetDateTime.now()))
+                                .toList()
+                                .size()
+                )
                 .history(remittanceHistory)
                 .build();
     }
