@@ -48,9 +48,14 @@ public class RemittanceControllerV2 {
     public ResponseEntity<HttpResponseBody<?>> requestRemittanceAccept(@RequestBody RemittanceAcceptRequestBodyDTO requestBody) {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        String idType = SecurityContextHolder.getContext().getAuthentication()
+                .getAuthorities()
+                .iterator()
+                .next()
+                .getAuthority();
 
         // 송금 접수 요청
-        remittanceService.requestRemittanceAccept(requestBody.getQuoteId(), userId);
+        remittanceService.requestRemittanceAccept(requestBody.getQuoteId(), userId, idType);
 
         // Response 처리
         return ResponseEntity.status(SUCCESS_REQUEST_REMITTANCE_ACCEPT.getStatusCode()).body(
