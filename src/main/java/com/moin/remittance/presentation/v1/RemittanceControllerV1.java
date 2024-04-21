@@ -6,6 +6,7 @@ import com.moin.remittance.domain.dto.remittance.v1.RemittanceQuoteResponseDTO;
 import com.moin.remittance.domain.dto.requestbody.RemittanceAcceptRequestBodyDTO;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
 import com.moin.remittance.application.v1.RemittanceServiceV1;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 
 @RestController
 @RequiredArgsConstructor
+@Hidden
 @RequestMapping(value = "/api/v1/transfer")
 public class RemittanceControllerV1 {
 

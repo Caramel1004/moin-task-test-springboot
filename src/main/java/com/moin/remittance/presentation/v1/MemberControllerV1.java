@@ -4,6 +4,7 @@ import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
 import com.moin.remittance.domain.dto.member.MemberDTO;
 import com.moin.remittance.domain.dto.requestbody.MemberLoginRequestBodyDTO;
 import com.moin.remittance.application.v1.MemberServiceV1;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import static com.moin.remittance.domain.vo.HttpResponseCode.SUCCESS_MEMBER_SIGN
 
 @RestController
 @RequiredArgsConstructor
+@Hidden
 @RequestMapping(value = "/api/v1/user")
 public class MemberControllerV1 {
 
