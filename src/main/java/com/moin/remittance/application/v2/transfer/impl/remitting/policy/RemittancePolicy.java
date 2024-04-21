@@ -5,5 +5,5 @@ import java.time.OffsetDateTime;
 
 @FunctionalInterface
 public interface RemittancePolicy {
-    BigDecimal getLimitAmount(String userType);
+    BigDecimal getLimitAmountByIdType(String userType);
 }
