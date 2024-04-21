@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,9 +18,10 @@ import java.util.stream.Collectors;
 public class RemittanceOffice {
     private final RemittanceLogRepositoryV2 remittanceLogRepositoryV2;
 
-    public long getSumOfSourceAmountByUserId(String userId) {
+    public long getTodaySumOfSourceAmountByUserId(String userId) {
         return remittanceLogRepositoryV2.findByUserId(userId)
                 .stream()
+                .filter(e -> e.getRequestedDate().toLocalDate().isEqual(OffsetDateTime.now().toLocalDate()))
                 .mapToLong(RemittanceLogEntityV2::getSourceAmount)
                 .sum();
     }
