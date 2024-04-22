@@ -48,6 +48,7 @@ public enum HttpResponseCode {
     // 송금 접수 요청 관련 에러 코드
     /* 4xx */
     BAD_QUOTE_EXPIRATION_TIME_OVER(HttpStatus.UNAUTHORIZED.value(), "송금 견적서가 만료 되었습니다.", "BAD_QUOTE_EXPIRATION_TIME_OVER"),
+    BAD_NOT_MATCH_QUOTATION(HttpStatus.BAD_REQUEST.value(), "일치하는 견적서가 없습니다.", "BAD_NOT_MATCH_QUOTATION"),
     BAD_INDIVIDUAL_MEMBER_LIMIT_EXCESS(HttpStatus.BAD_REQUEST.value(), "개인 회원님의 1일 송금가능액 한도 초과 하였습니다.", "BAD_INDIVIDUAL_MEMBER_LIMIT_EXCESS"),
     BAD_CORPORATION_MEMBER_LIMIT_EXCESS(HttpStatus.BAD_REQUEST.value(), "법인 회원님의 1일 송금가능액 한도 초과 하였습니다.", "BAD_CORPORATION_MEMBER_LIMIT_EXCESS"),
     BAD_INDIVIDUAL_MEMBER_SUM_LIMIT_EXCESS(HttpStatus.BAD_REQUEST.value(), "합산 결과 개인 회원님의 1일 송금가능액 한도 초과 하였습니다.", "BAD_INDIVIDUAL_MEMBER_SUM_LIMIT_EXCESS"),
