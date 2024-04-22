@@ -7,6 +7,7 @@ import com.moin.remittance.core.jwt.filter.JwtRequestFilter;
 import com.moin.remittance.core.jwt.provider.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -87,7 +88,8 @@ public class SpringSecurityConfig {
          * 로그인과 회원가입은 허용해주어야 인증되지 않은 회원이 서비스를 이용할 수 있도록 하는 엔드포인트 이기때문에 이 두개의 엔드포인트는 허용해줍니다.
          * */
         httpSecurity.authorizeHttpRequests(req -> req
-                .requestMatchers("/api/v2/user/login", "/api/v2/user/signup").permitAll()
+                .requestMatchers("/api/v2/user/login", "/api/v2/user/signup", "/api/v2/moin-api", "/swagger-ui/**").permitAll()
+                .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .anyRequest().authenticated()
         );
 
