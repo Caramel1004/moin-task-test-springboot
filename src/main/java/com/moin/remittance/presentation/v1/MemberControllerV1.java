@@ -48,7 +48,7 @@ public class MemberControllerV1 {
     @PostMapping(value = "/login")
     public ResponseEntity<HttpResponseBody> login(@RequestBody @Valid MemberLoginRequestBodyDTO memberDTO) {
 
-        String token = memberServiceV1.getAuthToken(memberDTO.getUserId(), memberDTO.getPassword());
+        String token = memberServiceV1.getAuthToken(memberDTO.getUsername(), memberDTO.getPassword());
 
         return ResponseEntity.status(SUCCESS_MEMBER_LOGIN.getStatusCode()).body(
                 HttpResponseBody.<String>builder()
