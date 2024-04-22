@@ -102,7 +102,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String idType = iterator.next().getAuthority();
         String userId = member.getUsername();
 
-        String jwt = jwtTokenProvider.createAuthorizationToken(userId, idType, 60 * 60 * 30);
+        String jwt = jwtTokenProvider.createAuthorizationToken(userId, idType, 60 * 60 * 1000);
 
         log.info("jwt: " + jwt);
 
