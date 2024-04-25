@@ -2,14 +2,18 @@ package com.moin.remittance.domain.dto.remittance.v2;
 
 import com.moin.remittance.domain.entity.remittance.v2.RemittanceQuoteEntityV2;
 import com.moin.remittance.exception.NullPointerQuotationException;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
+import static com.moin.remittance.domain.vo.HttpResponseCode.BAD_NOT_MATCH_QUOTATION;
+
 @Builder
 @Getter
+@Schema(description = "송금 견적서")
 public class RemittanceQuoteV2DTO {
     // 송금 할 금액(원화)
     private long sourceAmount;
@@ -49,6 +53,9 @@ public class RemittanceQuoteV2DTO {
     }
 
     public static RemittanceQuoteV2DTO of (RemittanceQuoteEntityV2 dto) {
+        if(dto == null) {
+            throw new NullPointerQuotationException(BAD_NOT_MATCH_QUOTATION);
+        }
         return RemittanceQuoteV2DTO.builder()
                 .sourceAmount(dto.getSourceAmount())// 원화
                 .fee(new BigDecimal(String.valueOf(dto.getFee())))// 수수료

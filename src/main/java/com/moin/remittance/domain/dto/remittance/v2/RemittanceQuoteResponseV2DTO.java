@@ -1,6 +1,7 @@
 package com.moin.remittance.domain.dto.remittance.v2;
 
 import com.moin.remittance.domain.entity.remittance.v2.RemittanceQuoteEntityV2;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ import java.time.OffsetDateTime;
 /* 환율을 적용한 송금 견적서 */
 @Data
 @Builder
+@Schema(description = "SUCCESS_GET_REMITTANCE_QUOTE: 송금 견적서")
 public class RemittanceQuoteResponseV2DTO {
     // 채번한 송금 견적서 아이디
     private Long quoteId;

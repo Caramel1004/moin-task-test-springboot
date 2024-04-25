@@ -1,10 +1,8 @@
 package com.moin.remittance.domain.dto.remittance.v2;
 
-import com.moin.remittance.domain.dto.remittance.v2.RemittanceQuoteV2DTO;
 import com.moin.remittance.domain.entity.remittance.v2.RemittanceLogEntityV2;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
 
