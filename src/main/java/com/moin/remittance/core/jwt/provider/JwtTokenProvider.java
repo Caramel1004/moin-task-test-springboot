@@ -33,14 +33,14 @@ public class JwtTokenProvider {
      * HMAC-SHA512 알고리즘 사용
      * 영어문자 하나당 1bit => 512bit = 64byte = 8bit X 8bit => 문자열 길이 64
      */
-    public String createAuthorizationToken(String userId, String idType,long second) {
+    public String createAuthorizationToken(String userId, String idType,long milliSecond) {
         return Jwts.builder()
                 // 영어문자 하나당 1bit => 512bit = 64byte = 8bit X 8bit => 문자열 길이 64
                 .signWith(Keys.hmacShaKeyFor(jwtConfigProps.SECRET_KEY.getBytes()), Jwts.SIG.HS512)
                 .header()
                 .add("typ", jwtConfigProps.AUTH_TOKEN_TYPE)
                 .and()
-                .expiration(new Date(System.currentTimeMillis() + second))
+                .expiration(new Date(System.currentTimeMillis() + milliSecond))
                 .claim("userId", userId)
                 .claim("idType", idType)
                 .compact();
@@ -106,6 +106,7 @@ public class JwtTokenProvider {
                     .build()
                     .parseSignedClaims(jwt);
 
+            System.out.println(parsedToken);
             Date exp = parsedToken.getPayload().getExpiration();
 
             // 만료시간, 현재시간 비교
