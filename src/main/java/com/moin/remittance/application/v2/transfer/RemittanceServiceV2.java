@@ -15,13 +15,13 @@ public interface RemittanceServiceV2 {
      *
      * @Return RemittanceQuoteResponseDTO: 송금 견적서
      */
-    RemittanceQuoteResponseV2DTO getRemittanceQuoteV2(RemittanceQuoteRequestParamsDTO requestParams);
+    RemittanceQuoteResponseV2DTO getRemittanceQuoteV2(long sourceAmount, String targetCurrency);
 
     /**
      * @Parameter long quoteId: 견적서 id
      * @Parameter String userId: 유저의 아이디
      */
-    void requestRemittanceAccept(long quoteId, String userId);
+    void requestRemittanceAccept(long quoteId, String userId, String idType);
 
     /**
      * @Return 송금 견적서
