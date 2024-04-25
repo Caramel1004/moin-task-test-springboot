@@ -6,9 +6,14 @@ import com.moin.remittance.domain.dto.remittance.v2.TransactionLogV2DTO;
 import com.moin.remittance.domain.dto.requestbody.RemittanceAcceptRequestBodyDTO;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
 import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +23,7 @@ import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "RemittanceControllerV2", description = "송금 관련 컨트롤러: 송금 견적서 가져오기, 송금 요청, 회원의 송금 거래 이력 가져오기")
 @RequestMapping(value = "/api/v2/transfer")
 public class RemittanceControllerV2 {
 
@@ -31,20 +37,34 @@ public class RemittanceControllerV2 {
      * @Param String amount: 원화
      * @Param String targetCurrency: 타겟 통화
      **/
+    @Operation(summary = "두나무 오픈 API 스크래핑해서 환율이 적용된 송금 견적서를 리턴")
     @GetMapping(value = "/quote", headers = "API-Version=2")
-    public ResponseEntity<HttpResponseBody<RemittanceQuoteResponseV2DTO>> getRemittanceQuoteV2(@Valid RemittanceQuoteRequestParamsDTO requestParams) {
+    public ResponseEntity<HttpResponseBody<RemittanceQuoteResponseV2DTO>> getRemittanceQuoteV2(
+            @RequestParam
+            @Parameter(name="amount", description = "원화 송금액", required = true)
+
+            @Positive(message = "양수로 입력하세요.")
+            @NotNull(message = "금액을 입력하세요.")
+            long amount,
+            @RequestParam
+            @Parameter(name="targetCurrency", description = "환전할 통화 코드를 입력하세요.", required = true)
+
+            @NotEmpty(message = "유효한 타겟 통화를 입력하세요.")
+            String targetCurrency
+    ) {
         return ResponseEntity.status(SUCCESS_GET_REMITTANCE_QUOTE.getStatusCode()).body(
                 HttpResponseBody.<RemittanceQuoteResponseV2DTO>builder()
                         .statusCode(SUCCESS_GET_REMITTANCE_QUOTE.getStatusCode())
                         .message(SUCCESS_GET_REMITTANCE_QUOTE.getMessage())
                         .codeName(SUCCESS_GET_REMITTANCE_QUOTE.getCodeName())
-                        .data(remittanceService.getRemittanceQuoteV2(requestParams))
+                        .data(remittanceService.getRemittanceQuoteV2(amount, targetCurrency))
                         .build()
         );
     }
 
     // 송금 접수 요청
-    @PostMapping(value = "/request")
+    @Operation(summary = "송금 접수 요청")
+    @PostMapping(value = "/request", headers = "API-Version=2")
     public ResponseEntity<HttpResponseBody<?>> requestRemittanceAccept(@RequestBody RemittanceAcceptRequestBodyDTO requestBody) {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -73,7 +93,8 @@ public class RemittanceControllerV2 {
      *
      * @Param MemberDTO: 회원 정보 -> JWT 파싱해서 정보 얻기
      **/
-    @GetMapping(value = "/list")
+    @Operation(summary = "회원의 거래 이력을 리턴")
+    @GetMapping(value = "/list", headers = "API-Version=2")
     public ResponseEntity<HttpResponseBody<TransactionLogV2DTO>> getRemittanceLog() {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
