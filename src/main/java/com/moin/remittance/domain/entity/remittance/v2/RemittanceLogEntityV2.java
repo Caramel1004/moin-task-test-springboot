@@ -1,6 +1,5 @@
 package com.moin.remittance.domain.entity.remittance.v2;
 
-import com.moin.remittance.domain.dto.remittance.v1.RemittanceLogDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,9 +18,9 @@ import java.time.OffsetDateTime;
 @Table(name = "remittance_log_v2")
 public class RemittanceLogEntityV2 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "log_id")
-    private Long logId;
+    private UUID logId;
 
     // 송금 할 금액(원화)
     @Column(name = "source_amount", nullable = false)
@@ -53,7 +53,6 @@ public class RemittanceLogEntityV2 {
 
     @Column(name = "requested_date", nullable = false)
     private OffsetDateTime requestedDate;
-
 
     @Column(name = "user_id", nullable = false)
     private String userId;
