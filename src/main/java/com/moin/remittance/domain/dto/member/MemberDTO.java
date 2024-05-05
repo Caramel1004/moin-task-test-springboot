@@ -1,6 +1,5 @@
 package com.moin.remittance.domain.dto.member;
 
-import com.moin.remittance.domain.entity.member.v2.MemberEntityV2;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Getter;
