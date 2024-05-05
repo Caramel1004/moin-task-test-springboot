@@ -3,13 +3,11 @@ package com.moin.remittance.presentation.v2;
 import com.moin.remittance.application.v2.transfer.RemittanceServiceV2;
 import com.moin.remittance.domain.dto.remittance.v2.RemittanceQuoteResponseV2DTO;
 import com.moin.remittance.domain.dto.remittance.v2.TransactionLogV2DTO;
-import com.moin.remittance.domain.dto.requestbody.RemittanceAcceptRequestBodyDTO;
-import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
+import com.moin.remittance.domain.dto.requestbody.v2.RemittanceAcceptRequestBodyV2DTO;
 import com.moin.remittance.domain.dto.responsebody.HttpResponseBody;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -52,12 +50,14 @@ public class RemittanceControllerV2 {
             @NotEmpty(message = "유효한 타겟 통화를 입력하세요.")
             String targetCurrency
     ) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+
         return ResponseEntity.status(SUCCESS_GET_REMITTANCE_QUOTE.getStatusCode()).body(
                 HttpResponseBody.<RemittanceQuoteResponseV2DTO>builder()
                         .statusCode(SUCCESS_GET_REMITTANCE_QUOTE.getStatusCode())
                         .message(SUCCESS_GET_REMITTANCE_QUOTE.getMessage())
                         .codeName(SUCCESS_GET_REMITTANCE_QUOTE.getCodeName())
-                        .data(remittanceService.getRemittanceQuoteV2(amount, targetCurrency))
+                        .data(remittanceService.getRemittanceQuoteV2(amount, targetCurrency, userId))
                         .build()
         );
     }
@@ -65,7 +65,7 @@ public class RemittanceControllerV2 {
     // 송금 접수 요청
     @Operation(summary = "송금 접수 요청")
     @PostMapping(value = "/request", headers = "API-Version=2")
-    public ResponseEntity<HttpResponseBody<?>> requestRemittanceAccept(@RequestBody RemittanceAcceptRequestBodyDTO requestBody) {
+    public ResponseEntity<HttpResponseBody<?>> requestRemittanceAccept(@RequestBody RemittanceAcceptRequestBodyV2DTO requestBody) {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         String idType = SecurityContextHolder.getContext().getAuthentication()
