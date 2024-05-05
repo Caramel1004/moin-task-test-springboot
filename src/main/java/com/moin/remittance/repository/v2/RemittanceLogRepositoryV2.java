@@ -5,8 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface RemittanceLogRepositoryV2 extends JpaRepository<RemittanceLogEntityV2, Long> {
+public interface RemittanceLogRepositoryV2 extends JpaRepository<RemittanceLogEntityV2, UUID> {
     List<RemittanceLogEntityV2> findByUserId(String userId);
 }
