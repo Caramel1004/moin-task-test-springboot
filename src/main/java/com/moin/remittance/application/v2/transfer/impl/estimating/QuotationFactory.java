@@ -27,7 +27,7 @@ public class QuotationFactory {
      * @param usd          USD 환율 정보
      * @param target       타겟 통화 환율 정보
      */
-    public RemittanceQuoteV2DTO estimating(long sourceAmount, ExchangeRateInfoDTO usd, ExchangeRateInfoDTO target) {
+    public RemittanceQuoteV2DTO estimating(long sourceAmount, ExchangeRateInfoDTO usd, ExchangeRateInfoDTO target, String userId) {
         BigDecimal fee = feePolicyFactory.getAppliedFeeFromPolicy(sourceAmount);
 
         return RemittanceQuoteV2DTO.builder()// 송금 견적서 DTO
@@ -51,6 +51,7 @@ public class QuotationFactory {
                         target.getCurrencyCode())
                 ) // 받는 금액
                 .expireTime(expireTimeCalculator.calculateExpireTime(10)) // 송금 견적서 만료 기간
+                .userId(userId)
                 .build();
     }
 

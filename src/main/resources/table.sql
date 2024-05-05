@@ -34,7 +34,7 @@ CREATE TABLE remittance_log (
 );
 
 CREATE TABLE MEMBER_v2 (
-    INDEX BIGINT AUTO_INCREMENT,
+    INDEX UUID PRIMARY KEY,
     USER_ID VARCHAR(255) UNIQUE NOT NULL,
     PASSWORD VARCHAR(255) NOT NULL,
     NAME VARCHAR(255) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE MEMBER_v2 (
 );
 
 CREATE TABLE remittance_quote_v2 (
-    quote_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    quote_id UUID PRIMARY KEY,
     source_amount BIGINT NOT NULL,
     fee decimal(10, 0) NOT NULL,
     usd_exchange_rate decimal(10, 0) NOT NULL,
@@ -51,11 +51,12 @@ CREATE TABLE remittance_quote_v2 (
     target_currency VARCHAR(255) NOT NULL,
     exchange_rate decimal(10, 0) NOT NULL,
     target_amount decimal(10, 0) NOT NULL,
-    expire_time TIMESTAMP WITH TIME ZONE NOT NULL
+    expire_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    user_id VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE remittance_log_v2 (
-    log_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    log_id UUID PRIMARY KEY,
     source_amount BIGINT NOT NULL,
     fee decimal(10, 0) NOT NULL,
     usd_exchange_rate decimal(10, 0) NOT NULL,
@@ -65,15 +66,15 @@ CREATE TABLE remittance_log_v2 (
     target_amount decimal(10, 0) NOT NULL,
     requested_date TIMESTAMP WITH TIME ZONE NOT NULL,
     user_id VARCHAR(255) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES member(user_id)
+    FOREIGN KEY (user_id) REFERENCES member_v2(user_id)
 );
 
 
-select * from member;
+select * from member_v2;
 
-select * from remittance_quote;
+select * from remittance_quote_v2;
 
-select * from remittance_log;
+select * from remittance_log_v2;
 
 DROP ALL OBJECTS;
 

@@ -5,6 +5,8 @@ import com.moin.remittance.domain.dto.remittance.v2.TransactionLogV2DTO;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public interface RemittanceServiceV2 {
 
@@ -15,13 +17,13 @@ public interface RemittanceServiceV2 {
      *
      * @Return RemittanceQuoteResponseDTO: 송금 견적서
      */
-    RemittanceQuoteResponseV2DTO getRemittanceQuoteV2(long sourceAmount, String targetCurrency);
+    RemittanceQuoteResponseV2DTO getRemittanceQuoteV2(long sourceAmount, String targetCurrency, String userId);
 
     /**
      * @Parameter long quoteId: 견적서 id
      * @Parameter String userId: 유저의 아이디
      */
-    void requestRemittanceAccept(long quoteId, String userId, String idType);
+    void requestRemittanceAccept(UUID quoteId, String userId, String idType);
 
     /**
      * @Return 송금 견적서

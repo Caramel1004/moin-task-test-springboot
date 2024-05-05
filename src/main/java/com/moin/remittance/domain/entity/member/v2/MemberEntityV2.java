@@ -1,12 +1,13 @@
 package com.moin.remittance.domain.entity.member.v2;
 
-import com.moin.remittance.domain.dto.member.MemberDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,9 +18,9 @@ import org.springframework.stereotype.Component;
 @Table(name = "member_v2")
 public class MemberEntityV2 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "INDEX")
-    private Long index;
+    private UUID index;
 
     @Column(name = "USER_ID", unique = true, nullable = false)
     private String userId;

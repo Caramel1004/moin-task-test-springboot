@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,9 +18,9 @@ import java.time.OffsetDateTime;
 @Table(name = "remittance_quote_v2")
 public class RemittanceQuoteEntityV2 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "quote_id")
-    private Long quoteId;
+    private UUID quoteId;
 
     // 송금 할 금액(원화)
     @Column(name = "source_amount", nullable = false)
@@ -52,4 +53,7 @@ public class RemittanceQuoteEntityV2 {
     // 만료 기간
     @Column(name = "expire_time", nullable = false)
     private OffsetDateTime expireTime;
+
+    @Column(name = "user_id", nullable = false)
+    private String userId;
 }

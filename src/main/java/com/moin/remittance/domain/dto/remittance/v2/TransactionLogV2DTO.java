@@ -15,19 +15,4 @@ public class TransactionLogV2DTO {
     private int todayTransferCount;
     private BigDecimal todayTransferUsdAmount;
     private List<RemittanceHistoryV2DTO> history;
-
-//    public TransactionLogV2DTO(List<RemittanceHistoryV2DTO> history, String userId, String name) {
-//        this.userId = userId;
-//        this.name = name;
-//        this.todayTransferCount = history.size();
-//        for(RemittanceHistoryV2DTO dto : history) {
-//            this.todayTransferUsdAmount += dto.getUsdAmount();
-//        }
-//        // 소수점 두째 자리 반올림
-//        this.todayTransferUsdAmount = Double.parseDouble(String.valueOf(new BigDecimal(this.todayTransferUsdAmount).setScale(2, RoundingMode.HALF_UP)));
-//
-//        this.history = history;
-//    }
-
-
 }

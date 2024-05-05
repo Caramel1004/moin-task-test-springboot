@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public record Quotation(QuotationOffice quotationOffice, QuotationFactory quotationFactory) {
 
-    public RemittanceQuoteV2DTO createQuotation(long sourceAmount, ExchangeRateInfoDTO usd, ExchangeRateInfoDTO target) throws NegativeNumberException {
-        return quotationFactory.estimating(sourceAmount, usd, target);
+    public RemittanceQuoteV2DTO createQuotation(long sourceAmount, ExchangeRateInfoDTO usd, ExchangeRateInfoDTO target, String userId) throws NegativeNumberException {
+        return quotationFactory.estimating(sourceAmount, usd, target, userId);
     }
 }
