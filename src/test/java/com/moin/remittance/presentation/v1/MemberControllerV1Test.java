@@ -80,7 +80,7 @@ public class MemberControllerV1Test {
         );
 
         MemberLoginRequestBodyDTO requestBody = MemberLoginRequestBodyDTO.builder()
-                .userId("test@test.com")
+                .username("test@test.com")
                 .password("1234")
                 .build();
 
