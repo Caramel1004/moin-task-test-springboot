@@ -1,8 +1,10 @@
 package com.moin.remittance.domain.dto.requestbody;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+import java.util.UUID;
+
+@Getter
 public class RemittanceAcceptRequestBodyDTO {
-    private long quoteId;
+    private UUID quoteId;
 }
