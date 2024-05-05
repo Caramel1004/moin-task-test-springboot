@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +51,7 @@ public class RemittanceServiceImplV2 implements RemittanceServiceV2 {
      */
     @Override
     @Transactional
-    public RemittanceQuoteResponseV2DTO getRemittanceQuoteV2(long sourceAmount, String targetCurrency) {
+    public RemittanceQuoteResponseV2DTO getRemittanceQuoteV2(long sourceAmount, String targetCurrency, String userId) {
         String code = !targetCurrency.equals("USD")? "FRX.KRW" + targetCurrency + ",FRX.KRWUSD" : "FRX.KRW" + targetCurrency;
         // 1. 외부 API 호출로 환율 정보 응답 데이터 받기
         HashMap<String, ExchangeRateInfoDTO> exchangeRateInfoHashMap =
@@ -60,7 +61,7 @@ public class RemittanceServiceImplV2 implements RemittanceServiceV2 {
         ExchangeRateInfoDTO targetExRateDTO = exchangeRateInfoHashMap.get(targetCurrency); // target currency
 
         // 2. 송금 견적서 찍어내기
-        RemittanceQuoteV2DTO remittanceQuoteDTO = quotation.createQuotation(sourceAmount, usdExRateDTO, targetExRateDTO);
+        RemittanceQuoteV2DTO remittanceQuoteDTO = quotation.createQuotation(sourceAmount, usdExRateDTO, targetExRateDTO, userId);
 
         // 3. 송금 견적서 저장(DB) -> 송금 견적서 리턴
         return RemittanceQuoteResponseV2DTO.of(remittanceRepositoryV2.saveAndFlush(remittanceQuoteDTO.toEntity(remittanceQuoteDTO)));
@@ -72,9 +73,9 @@ public class RemittanceServiceImplV2 implements RemittanceServiceV2 {
      */
     @Override
     @Transactional
-    public void requestRemittanceAccept(long quoteId, String userId, String idType) {
+    public void requestRemittanceAccept(UUID quoteId, String userId, String idType) {
         // 1. 채번한 견적서 id와 일치하는 견적서 조회
-        RemittanceQuoteV2DTO estimation = RemittanceQuoteV2DTO.of(remittanceRepositoryV2.findByQuoteId(quoteId));
+        RemittanceQuoteV2DTO estimation = RemittanceQuoteV2DTO.of(remittanceRepositoryV2.findByQuoteIdAndUserId(quoteId, userId));
 
         ExchangeRateInfoDTO usdExchangeRateDTO =
                 exchangeRateApiClient.fetchExchangeRateInfoFromExternalAPI("FRX.KRWUSD").get("USD");// 지금 현재 달러 환율 -> 외부 API
@@ -92,6 +93,9 @@ public class RemittanceServiceImplV2 implements RemittanceServiceV2 {
                 .build();
 
         remittanceLogRepositoryV2.saveAndFlush(log.toEntity(log));
+
+        // 4. 견적서 삭제
+        remittanceRepositoryV2.deleteById(quoteId);
     }
 
     @Override
