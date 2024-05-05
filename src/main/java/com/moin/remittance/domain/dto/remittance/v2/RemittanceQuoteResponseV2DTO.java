@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /* 환율을 적용한 송금 견적서 */
 @Data
@@ -14,7 +15,7 @@ import java.time.OffsetDateTime;
 @Schema(description = "SUCCESS_GET_REMITTANCE_QUOTE: 송금 견적서")
 public class RemittanceQuoteResponseV2DTO {
     // 채번한 송금 견적서 아이디
-    private Long quoteId;
+    private UUID quoteId;
 
     // targetCurrency가 미국이면 미국 환율, 일본이면 일본 환율 금액
     private BigDecimal exchangeRate;

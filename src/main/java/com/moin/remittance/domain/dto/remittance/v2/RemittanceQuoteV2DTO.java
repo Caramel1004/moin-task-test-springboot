@@ -39,6 +39,9 @@ public class RemittanceQuoteV2DTO {
     // 만료 기간
     private OffsetDateTime expireTime;
 
+    // 요청자(유저 아이디를 저장)
+    private String userId;
+
     public RemittanceQuoteEntityV2 toEntity (RemittanceQuoteV2DTO dto) {
         return RemittanceQuoteEntityV2.builder()
                 .sourceAmount(dto.getSourceAmount())// 원화
@@ -49,6 +52,7 @@ public class RemittanceQuoteV2DTO {
                 .targetAmount(dto.getTargetAmount())// 받는 금액
                 .exchangeRate(dto.getExchangeRate())
                 .expireTime(dto.getExpireTime())// 송금 견적서 만료 기간
+                .userId(dto.getUserId())
                 .build();
     }
 
