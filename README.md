@@ -43,7 +43,7 @@ overseas remittance
 >- 송금 접수 요청 API => Required Authorization
 >- 회원 거래 이력 요청 API => Required Authorization
 ### 1. 회원가입 API
-- #### EndPoint: /api/v1/user/signup
+- #### EndPoint: /api/v2/user/signup
 - #### Method: POST
 - #### *Request Body*
   - 유저 아이디
@@ -81,7 +81,7 @@ overseas remittance
 >>```
 
 ### 2. 로그인 API
-- #### EndPoint: /api/v1/user/login
+- #### EndPoint: /api/v2/user/login
 - #### Method: POST
 - #### *Request Body*
   - 유저 아이디
@@ -116,7 +116,7 @@ overseas remittance
 >>```
 
 ### 3. 송금 견적서 요청 API
-- #### EndPoint: /api/v1/transfer/quote
+- #### EndPoint: /api/v2/transfer/quote
 - #### Method: GET
 - #### *Parameters*
 ```
@@ -126,7 +126,7 @@ amount(Number) 원화 금액 *required
 ```
 
 ### 4. 송금 접수 요청 API
-- #### EndPoint: /api/v1/transfer/request
+- #### EndPoint: /api/v2/transfer/request
 - #### Method: POST
 - #### *Request Body*
     - 인증 토큰
@@ -188,7 +188,7 @@ amount(Number) 원화 금액 *required
 >>```
 
 ### 5. 회원 거래 이력 요청 API
-- #### EndPoint: /api/v1/transfer/list
+- #### EndPoint: /api/v2/transfer/list
 - #### Method: GET
 - #### *Parameters*
 ```dtd
