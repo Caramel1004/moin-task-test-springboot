@@ -1,4 +1,4 @@
-package com.moin.remittance.repository;
+package com.moin.remittance.repository.v1;
 
 import com.moin.remittance.domain.entity.member.v2.MemberEntityV2;
 import com.moin.remittance.repository.v2.MemberRepositoryV2;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.ANY) // 가짜 DB로 테스트
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY) // 가짜 DB로 테스트
 public class MemberRepositoryTest {
 
     @Autowired
@@ -28,7 +28,7 @@ public class MemberRepositoryTest {
     /**
      * 회원가입
      * 유저데이터 저장 -> 유저 조회 where(유저아이디, 비밀번호)
-     * */
+     */
     @Test
     @DisplayName("회원 가입 데이터 저장")
     public void saveUserTest() {
@@ -47,7 +47,7 @@ public class MemberRepositoryTest {
         // then: junit 메소드로 값 비교
         assertEquals(member.getUserId(), memberEntity.getUserId()); // 회원 아이디(이메일 형식)
         assertEquals(member.getPassword(), memberEntity.getPassword()); // 회원 비밀번호
-        assertEquals(member.getName(),memberEntity.getName()); // 회원 이름
+        assertEquals(member.getName(), memberEntity.getName()); // 회원 이름
 
         // assertj 메소드
         assertThat(member.getIdType()).isEqualTo(memberEntity.getIdType()); // 개인 회원 or 법인 회원
@@ -57,7 +57,7 @@ public class MemberRepositoryTest {
     /**
      * 회원가입 -> 로그인
      * 유저데이터 저장 -> 유저 조회 where(유저아이디, 비밀번호)
-     * */
+     */
     @Test
     @Transactional
     @DisplayName("회원 가입 데이터 저장 -> 회원 조회")
@@ -77,7 +77,7 @@ public class MemberRepositoryTest {
         // then: junit 메소드로 타겟 값과 저장된 값 비교
         assertEquals(member.getUserId(), memberEntity.getUserId()); // 회원 아이디(이메일 형식)
         assertEquals(member.getPassword(), memberEntity.getPassword()); // 회원 비밀번호
-        assertEquals(member.getName(),memberEntity.getName()); // 회원 이름
+        assertEquals(member.getName(), memberEntity.getName()); // 회원 이름
         // assertj 메소드
         assertThat(member.getIdType()).isEqualTo(memberEntity.getIdType()); // 개인 회원 or 법인 회원
         assertThat(member.getIdValue()).isEqualTo(memberEntity.getIdValue()); // 주민등록번호 or 사업자 번호
