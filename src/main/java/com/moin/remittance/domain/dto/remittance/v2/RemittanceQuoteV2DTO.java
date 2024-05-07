@@ -56,19 +56,19 @@ public class RemittanceQuoteV2DTO {
                 .build();
     }
 
-    public static RemittanceQuoteV2DTO of (RemittanceQuoteEntityV2 dto) {
-        if(dto == null) {
+    public static RemittanceQuoteV2DTO of (RemittanceQuoteEntityV2 entity) {
+        if(entity == null) {
             throw new NullPointerQuotationException(BAD_NOT_MATCH_QUOTATION);
         }
         return RemittanceQuoteV2DTO.builder()
-                .sourceAmount(dto.getSourceAmount())// 원화
-                .fee(new BigDecimal(String.valueOf(dto.getFee())))// 수수료
-                .usdExchangeRate(dto.getUsdExchangeRate())
-                .usdAmount(dto.getUsdAmount())// USD 송금액
-                .targetCurrency(dto.getTargetCurrency())
-                .targetAmount(dto.getTargetAmount())// 받는 금액
-                .exchangeRate(dto.getExchangeRate())
-                .expireTime(dto.getExpireTime())// 송금 견적서 만료 기간
+                .sourceAmount(entity.getSourceAmount())// 원화
+                .fee(new BigDecimal(String.valueOf(entity.getFee())))// 수수료
+                .usdExchangeRate(entity.getUsdExchangeRate())
+                .usdAmount(entity.getUsdAmount())// USD 송금액
+                .targetCurrency(entity.getTargetCurrency())
+                .targetAmount(entity.getTargetAmount())// 받는 금액
+                .exchangeRate(entity.getExchangeRate())
+                .expireTime(entity.getExpireTime())// 송금 견적서 만료 기간
                 .build();
     }
 
