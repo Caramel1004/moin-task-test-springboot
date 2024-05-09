@@ -56,4 +56,20 @@ public class RemittanceLogEntityV2 {
 
     @Column(name = "user_id", nullable = false)
     private String userId;
+
+    @Override
+    public String toString() {
+        return "RemittanceLogEntityV2 {" + "\n" +
+                "\tlogId: " + logId + ",\n" +
+                "\tsourceAmount: " + sourceAmount + ",\n" +
+                "\tfee: " + fee + ",\n" +
+                "\tusdExchangeRate: " + usdExchangeRate + ",\n" +
+                "\tusdAmount: " + usdAmount + ",\n" +
+                "\ttargetCurrency: '" + targetCurrency + '\'' + ",\n" +
+                "\ttargetAmount: " + targetAmount + ",\n" +
+                "\texchangeRate: " + exchangeRate + ",\n" +
+                "\texpireTime: " + requestedDate + ",\n" +
+                "\tuserId: '" + userId + '\'' + ",\n" +
+                '}';
+    }
 }

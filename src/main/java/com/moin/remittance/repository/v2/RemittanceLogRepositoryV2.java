@@ -10,4 +10,7 @@ import java.util.UUID;
 @Repository
 public interface RemittanceLogRepositoryV2 extends JpaRepository<RemittanceLogEntityV2, UUID> {
     List<RemittanceLogEntityV2> findByUserId(String userId);
+
+    /* 테스트 용 쿼리 메소드 */
+    boolean existsByUserId(String userId);
 }

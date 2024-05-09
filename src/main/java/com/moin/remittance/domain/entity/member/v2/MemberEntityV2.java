@@ -36,4 +36,16 @@ public class MemberEntityV2 {
 
     @Column(name = "ID_VALUE", nullable = false)
     private String idValue;
+
+    @Override
+    public String toString() {
+        return "MemberEntityV2 {" + "\n" +
+                "\tindex: " + index + ",\n" +
+                "\tuserId: '" + userId + '\''+ ",\n" +
+                "\tpassword: '" + password+ '\'' + ",\n" +
+                "\tname: '" + name+ '\'' + ",\n" +
+                "\tidType: '" + idType+ '\'' + ",\n" +
+                "\tidValue: '" + idValue + '\'' + ",\n" +
+                '}';
+    }
 }
