@@ -10,4 +10,8 @@ import java.util.UUID;
 public interface RemittanceRepositoryV2 extends JpaRepository<RemittanceQuoteEntityV2, UUID> {
     // 송금 견적서 조회
     RemittanceQuoteEntityV2 findByQuoteIdAndUserId(UUID quoteId, String userId);
+
+    boolean existsByQuoteIdAndUserId(UUID quoteId, String userId);
+
+
 }
