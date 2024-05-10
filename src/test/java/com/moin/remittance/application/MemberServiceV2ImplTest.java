@@ -1,4 +1,4 @@
-package com.moin.remittance.service;
+package com.moin.remittance.application;
 
 
 import org.junit.jupiter.api.DisplayName;
