@@ -5,6 +5,7 @@ import com.moin.remittance.application.v2.transfer.impl.estimating.calculating.E
 import com.moin.remittance.application.v2.transfer.impl.estimating.policy.FeePolicyFactory;
 import com.moin.remittance.domain.dto.remittance.v2.ExchangeRateInfoDTO;
 import com.moin.remittance.domain.dto.remittance.v2.RemittanceQuoteV2DTO;
+import com.moin.remittance.domain.entity.remittance.v2.RemittanceQuoteEntityV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,10 +28,10 @@ public class QuotationFactory {
      * @param usd          USD 환율 정보
      * @param target       타겟 통화 환율 정보
      */
-    public RemittanceQuoteV2DTO estimating(long sourceAmount, ExchangeRateInfoDTO usd, ExchangeRateInfoDTO target, String userId) {
+    public RemittanceQuoteEntityV2 estimating(long sourceAmount, ExchangeRateInfoDTO usd, ExchangeRateInfoDTO target, String userId) {
         BigDecimal fee = feePolicyFactory.getAppliedFeeFromPolicy(sourceAmount);
 
-        return RemittanceQuoteV2DTO.builder()// 송금 견적서 DTO
+        return RemittanceQuoteEntityV2.builder()// 송금 견적서 DTO
                 .sourceAmount(sourceAmount) // 원화
                 .fee(fee) // 수수료
                 .usdExchangeRate(usd.getBasePrice()) // USD 환율

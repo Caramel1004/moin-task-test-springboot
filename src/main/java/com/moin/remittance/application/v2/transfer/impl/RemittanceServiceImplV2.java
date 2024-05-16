@@ -8,6 +8,7 @@ import com.moin.remittance.application.v2.transfer.impl.remitting.RemittancePoli
 import com.moin.remittance.domain.dto.remittance.v2.*;
 import com.moin.remittance.domain.dto.requestparams.RemittanceQuoteRequestParamsDTO;
 
+import com.moin.remittance.domain.entity.remittance.v2.RemittanceQuoteEntityV2;
 import com.moin.remittance.exception.NullPointerQuotationException;
 
 import com.moin.remittance.repository.v2.MemberRepositoryV2;
@@ -61,10 +62,10 @@ public class RemittanceServiceImplV2 implements RemittanceServiceV2 {
         ExchangeRateInfoDTO targetExRateDTO = exchangeRateInfoHashMap.get(targetCurrency); // target currency
 
         // 2. 송금 견적서 찍어내기
-        RemittanceQuoteV2DTO remittanceQuoteDTO = quotation.createQuotation(sourceAmount, usdExRateDTO, targetExRateDTO, userId);
+        RemittanceQuoteEntityV2 remittanceQuoteEntity = quotation.createQuotation(sourceAmount, usdExRateDTO, targetExRateDTO, userId);
 
         // 3. 송금 견적서 저장(DB) -> 송금 견적서 리턴
-        return RemittanceQuoteResponseV2DTO.of(remittanceRepositoryV2.saveAndFlush(remittanceQuoteDTO.toEntity(remittanceQuoteDTO)));
+        return RemittanceQuoteResponseV2DTO.of(remittanceRepositoryV2.saveAndFlush(remittanceQuoteEntity));
     }
 
     /**
