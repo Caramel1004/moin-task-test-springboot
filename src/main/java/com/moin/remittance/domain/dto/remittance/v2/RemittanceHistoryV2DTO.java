@@ -1,6 +1,6 @@
 package com.moin.remittance.domain.dto.remittance.v2;
 
-import lombok.*;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -32,4 +32,20 @@ public class RemittanceHistoryV2DTO {
 
     // 송금 접수 요청 날짜
     private OffsetDateTime requestedDate;
+
+    /* Test data 모니터링 */
+    @Override
+    public String toString() {
+        return "\t\t\n{" + "\n" +
+                "\tsourceAmount: " + sourceAmount + ",\n" +
+                "\tfee: " + fee + ",\n" +
+                "\tusdExchangeRate: " + usdExchangeRate + ",\n" +
+                "\tusdAmount: " + usdAmount + ",\n" +
+                "\ttargetCurrency: " + targetCurrency + "\n" +
+                "\texchangeRate: " + exchangeRate + "\n" +
+                "\ttargetAmount: " + targetAmount + "\n" +
+                "\tuserId: " + userId + "\n" +
+                "\trequestedDate: " + requestedDate + "\n" +
+                "}";
+    }
 }

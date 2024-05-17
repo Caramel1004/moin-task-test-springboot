@@ -3,12 +3,10 @@ package com.moin.remittance.application.v2.user.impl;
 import com.moin.remittance.domain.entity.member.v2.MemberEntityV2;
 import com.moin.remittance.exception.DuplicateUserIdException;
 import com.moin.remittance.exception.InValidPatternTypeException;
-import com.moin.remittance.exception.NotFoundMemberException;
 import com.moin.remittance.domain.dto.member.MemberDTO;
 import com.moin.remittance.application.v2.user.MemberServiceV2;
 import com.moin.remittance.repository.v2.MemberRepositoryV2;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +20,10 @@ import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImplV2 implements MemberServiceV2 {
+
     private final MemberRepositoryV2 memberRepositoryV2;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Value("${jwt.token.secret}")
-    private String key;
 
     @Override
     public void saveUser(MemberDTO member) {
@@ -38,14 +35,14 @@ public class MemberServiceImplV2 implements MemberServiceV2 {
         Pattern businessPattern = Pattern.compile(BUSINESS_NUMBER_REGEX);
 
         Matcher targetMatcher;
-        switch (member.getIdType()) { // type 매칭 -> 패턴 체크
-            case "reg_no":
+        switch (member.getIdType().toUpperCase()) { // type 매칭 -> 패턴 체크
+            case "REG_NO":
                 targetMatcher = residentPattern.matcher(member.getIdValue());
                 if (!targetMatcher.matches()) {
                     throw new InValidPatternTypeException(BAD_INDIVIDUAL_MEMBER_INVALID_ID_VALUE);
                 }
                 break;
-            case "business_no":
+            case "BUSINESS_NO":
                 targetMatcher = businessPattern.matcher(member.getIdValue());
                 if (!targetMatcher.matches()) {
                     throw new InValidPatternTypeException(BAD_CORPORATION_MEMBER_INVALID_ID_VALUE);
@@ -63,12 +60,15 @@ public class MemberServiceImplV2 implements MemberServiceV2 {
         }
 
         // 3. 비밀번호, 주민등록번호 or 사업자등록번호 암호화해서 저장
-        memberRepositoryV2.saveAndFlush(MemberEntityV2.builder()
-                .userId(member.getUserId())
-                .password(bCryptPasswordEncoder.encode(member.getPassword()))
-                .name(member.getName())
-                .idType(member.getIdType())
-                .idValue(bCryptPasswordEncoder.encode(member.getIdValue()))
-                .build());
+        memberRepositoryV2.saveAndFlush(
+                MemberEntityV2.builder()
+                        .userId(member.getUserId())
+                        .password(bCryptPasswordEncoder.encode(member.getPassword()))
+                        .name(member.getName())
+                        .idType(member.getIdType())
+                        .idValue(bCryptPasswordEncoder.encode(member.getIdValue()))
+                        .build()
+        );
+
     }
 }
