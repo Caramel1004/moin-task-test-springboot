@@ -10,7 +10,7 @@ public enum HttpResponseCode {
 
     // 회원 관련 성공 상태 코드
     /* 2xx */
-    SUCCESS_MEMBER_SIGNUP(HttpStatus.OK.value(), "회원 가입 성공", "SUCCESS_MEMBER_SIGNUP"),
+    SUCCESS_MEMBER_SIGNUP(HttpStatus.CREATED.value(), "회원 가입 성공", "SUCCESS_MEMBER_SIGNUP"),
     SUCCESS_MEMBER_LOGIN(HttpStatus.OK.value(), "로그인 성공", "SUCCESS_MEMBER_LOGIN"),
 
     // 송금 관련 성공 상태 코드
