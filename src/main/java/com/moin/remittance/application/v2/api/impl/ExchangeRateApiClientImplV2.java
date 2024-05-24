@@ -34,8 +34,7 @@ public class ExchangeRateApiClientImplV2 implements ExchangeRateApiClientV2 {
                         .build()
                 )
                 .exchangeToMono(res -> {
-                    return res.bodyToMono(new ParameterizedTypeReference<List<ExchangeRateInfoDTO>>() {
-                    });
+                    return res.bodyToMono(new ParameterizedTypeReference<List<ExchangeRateInfoDTO>>() {});
                 })
                 .block();// 배열 json 으로 넘어온 데이터를 List 로 변환
 
