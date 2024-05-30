@@ -16,7 +16,6 @@ import java.util.Date;
 import static com.moin.remittance.domain.vo.HttpResponseCode.*;
 
 
-//
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -31,11 +30,11 @@ public class JwtTokenProvider {
      * @Return String jwt: 인증 토큰(jsonwebtoken)
      * secretKey: 영문 문자열 64
      * HMAC-SHA512 알고리즘 사용
-     * 영어문자 하나당 1bit => 512bit = 64byte = 8bit X 8bit => 문자열 길이 64
+     * 영어문자 하나당 1byte => 512bit = 64byte = 8bit X 8bit X 8bit => 문자열 길이 64
      */
     public String createAuthorizationToken(String userId, String idType,long milliSecond) {
         return Jwts.builder()
-                // 영어문자 하나당 1bit => 512bit = 64byte = 8bit X 8bit => 문자열 길이 64
+                // 영어문자 하나당 1byte => 512bit = 64byte = 8bit X 8bit X 8bit => 문자열 길이 64
                 .signWith(Keys.hmacShaKeyFor(jwtConfigProps.SECRET_KEY.getBytes()), Jwts.SIG.HS512)
                 .header()
                 .add("typ", jwtConfigProps.AUTH_TOKEN_TYPE)
@@ -54,7 +53,7 @@ public class JwtTokenProvider {
      * @Return UsernamePasswordAuthenticationToken token: 사용자 정보를 담은 인가 토큰 객체
      * secretKey: 영문 문자열 64
      * HMAC-SHA512 알고리즘 사용
-     * 영어문자 하나당 1bit => 512bit = 64byte = 8bit X 8bit => 문자열 길이 64
+     * 영어문자 하나당 1byte => 512bit = 64byte = 8bit X 8bit X 8bit => 문자열 길이 64
      */
     public Authentication getAuthentication(String token) {
         try {
@@ -96,7 +95,7 @@ public class JwtTokenProvider {
      * @Return boolean token: 사용자 정보를 담은 인가 토큰 객체
      * secretKey: 영문 문자열 64
      * HMAC-SHA512 알고리즘 사용
-     * 영어문자 하나당 1bit => 512bit = 64byte = 8bit X 8bit => 문자열 길이 64
+     * 영어문자 하나당 1byte => 512bit = 64byte = 8bit X 8bit X 8bit => 문자열 길이 64
      */
     public boolean isExpiredJWT (String jwt) {
         try {
