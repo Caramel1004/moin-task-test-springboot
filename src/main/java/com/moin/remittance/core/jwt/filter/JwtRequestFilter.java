@@ -39,7 +39,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String header = request.getHeader(jwtConfigProps.AUTH_TOKEN_HEADER);
 
-        // 엔드포인트가 "/api/v2/user/login" 일때만 통과 => 토큰이 없는 경우
+        // 엔드포인트가 "/api/v2/user/login" 일때만 걸림 => 토큰이 없는 경우
         if(header == null || header.isEmpty() || !header.startsWith(jwtConfigProps.AUTH_TOKEN_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
