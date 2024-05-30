@@ -130,6 +130,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
         // JSON 으로 변환하여 응답 본문에 작성
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        response.sendError(400, BAD_NOT_MATCH_MEMBER.getMessage());
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(ErrorResponseDTO.builder()
                         .code(BAD_NOT_MATCH_MEMBER.getStatusCode())
