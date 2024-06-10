@@ -38,12 +38,14 @@ public class ExchangeRateApiClientImplV2 implements ExchangeRateApiClientV2 {
                 })
                 .block();// 배열 json 으로 넘어온 데이터를 List 로 변환
 
-        // 배열 사이즈가 0아래라면 데이터가 없다는 의미 => 에외 처리
-        if (exchangeRateInfoList.isEmpty()) {
+        // 리스트가 비어있으면 데이터가 없다는 의미 => 에외 처리
+        if (exchangeRateInfoList == null || exchangeRateInfoList.isEmpty()) {
             throw new NotExternalDataException(INTERNAL_SERVER_ERROR_EXCHANGE_RATE_DATA);
         }
 
-        // ExchangeRateInfoDTO 참조형인 각각의 요소들을 hashmap 으로 저장 USD or USD,JPY
+        /* key명을 currency code로 정의 (ex. USD JPY EUR)
+        *  value 로 currency code에 해당하는 환율 정보 저장
+        * */
         HashMap<String, ExchangeRateInfoDTO> exchangeRateInfoHash = new HashMap<String, ExchangeRateInfoDTO>();
         for (ExchangeRateInfoDTO dto : exchangeRateInfoList) {
             exchangeRateInfoHash.put(dto.getCurrencyCode(), dto);
