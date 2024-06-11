@@ -17,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -40,18 +41,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String header = request.getHeader(jwtConfigProps.AUTH_TOKEN_HEADER);
 
         // 엔드포인트가 "/api/v2/user/login" 일때만 걸림 => 토큰이 없는 경우
-        if(header == null || header.isEmpty() || !header.startsWith(jwtConfigProps.AUTH_TOKEN_PREFIX)) {
+        if (header == null || header.isEmpty() || !header.startsWith(jwtConfigProps.AUTH_TOKEN_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         /*
-        * 이 부분부터는 헤더가 있는 경우 이므로 토큰만 추출 "Bearer " + JWT
-        * */
+         * 이 부분부터는 헤더가 있는 경우 이므로 토큰만 추출 "Bearer " + JWT
+         * */
         String token = header.split(jwtConfigProps.AUTH_TOKEN_PREFIX)[1];
 
 
-        if(jwtTokenProvider.isExpiredJWT(token)) {
+        if (jwtTokenProvider.isExpiredJWT(token)) {
             filterChain.doFilter(request, response);
             throw new UnAuthorizationJwtException(UNAUTHORIZED_EXPIRED_JWT);
         }
@@ -71,10 +72,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         .idType(idType)
                         .build()
         );
-        //스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+
+        /* 인증된 유저
+        * setAuthentication 파라미터 타입: Authentication
+        * */
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(
+                        new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities())
+                );
 
         filterChain.doFilter(request, response);
     }
