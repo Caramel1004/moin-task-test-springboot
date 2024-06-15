@@ -12,7 +12,6 @@ import com.moin.remittance.domain.entity.remittance.v2.RemittanceQuoteEntityV2;
 import com.moin.remittance.repository.v2.MemberRepositoryV2;
 import com.moin.remittance.repository.v2.RemittanceLogRepositoryV2;
 import com.moin.remittance.repository.v2.RemittanceRepositoryV2;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +33,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.*;
+
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 public class RemittanceServiceV2ImplTest {
@@ -137,13 +138,13 @@ public class RemittanceServiceV2ImplTest {
 
         RemittanceQuoteResponseV2DTO responseTestData = RemittanceQuoteResponseV2DTO.of(quotationTestEntity);
 
-        when(webClientMock.fetchExchangeRateInfoFromExternalAPI("FRX.KRWUSD")).thenReturn(new HashMap<String, ExchangeRateInfoDTO>());
+        given(webClientMock.fetchExchangeRateInfoFromExternalAPI("FRX.KRWUSD")).willReturn(new HashMap<String, ExchangeRateInfoDTO>());
 
-        when(quotationMock.createQuotation(
+        given(quotationMock.createQuotation(
                 anyLong(), any(), any(), anyString())
-        ).thenReturn(quotationTestEntity);
+        ).willReturn(quotationTestEntity);
 
-        when(remittanceRepositoryMock.saveAndFlush(quotationTestEntity)).thenReturn(quotationTestEntity);
+        given(remittanceRepositoryMock.saveAndFlush(quotationTestEntity)).willReturn(quotationTestEntity);
 
         // when
         RemittanceQuoteResponseV2DTO quotation = remittanceServiceMock.getRemittanceQuoteV2(
@@ -179,14 +180,14 @@ public class RemittanceServiceV2ImplTest {
         RemittanceLogEntityV2 logTestEntity = createLogEntityTestCase(quotationTestEntity);
 
         // when
-        when(remittanceRepositoryMock.findByQuoteIdAndUserId(quotationTestEntity.getQuoteId(), quotationTestEntity.getUserId()))
-                .thenReturn(quotationTestEntity);
+        given(remittanceRepositoryMock.findByQuoteIdAndUserId(quotationTestEntity.getQuoteId(), quotationTestEntity.getUserId()))
+                .willReturn(quotationTestEntity);
 
-        doNothing().when(policyCheckerMock).policyChecking(anyString(), anyString(), any(), any());
+        willDoNothing().given(policyCheckerMock).policyChecking(anyString(), anyString(), any(), any());
 
-        when(remittanceLogRepositoryMock.saveAndFlush(any(RemittanceLogEntityV2.class))).thenReturn(logTestEntity);
+        given(remittanceLogRepositoryMock.saveAndFlush(any(RemittanceLogEntityV2.class))).willReturn(logTestEntity);
 
-        doNothing().when(remittanceRepositoryMock).deleteById(quotationTestEntity.getQuoteId());
+        willDoNothing().given(remittanceRepositoryMock).deleteById(quotationTestEntity.getQuoteId());
 
         remittanceServiceMock.requestRemittanceAccept(
                 quotationTestEntity.getQuoteId(), "test@test.com", "REG_NO"
@@ -206,7 +207,7 @@ public class RemittanceServiceV2ImplTest {
 
     @Test
     @DisplayName("송금 거래 이력 Success Test")
-    public void quotationListTest() {
+    public void transactionListTest() {
         /* given: 다수의 송금 견적서 TestCase 생성*/
         RemittanceQuoteEntityV2 quotationTestEntity1 = createQuotationTestCase(
                 50000, 1, new BigDecimal("1362.50"), new BigDecimal("1362.50"), "USD"
@@ -224,11 +225,11 @@ public class RemittanceServiceV2ImplTest {
         RemittanceLogEntityV2 logEntity3 = createLogEntityTestCase(quotationTestEntity3);
 
         /* given: 특정 유저의 거래 이력이 있는 경우 Test Case 3개를 리턴 하도록 가정 */
-        when(remittanceLogRepositoryMock.findByUserId("test@test.com")).thenReturn(List.of(logEntity1, logEntity2, logEntity3));
+        given(remittanceLogRepositoryMock.findByUserId("test@test.com")).willReturn(List.of(logEntity1, logEntity2, logEntity3));
 
         /* given: 특정유저의 이름 값이 리턴 되도록 가정*/
-        when(memberRepositoryMock.getNameOfMemberByUserId("test@test.com")).thenReturn("카라멜프라푸치노");
-        when(memberRepositoryMock.getNameOfMemberByUserId("test2@test.com")).thenReturn("자바칩프라푸치노");
+        given(memberRepositoryMock.getNameOfMemberByUserId("test@test.com")).willReturn("카라멜프라푸치노");
+        given(memberRepositoryMock.getNameOfMemberByUserId("test2@test.com")).willReturn("자바칩프라푸치노");
 
 
         /* when: 특정 유저의 거래 이력이 있는 경우 */
