@@ -18,6 +18,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.given;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -72,12 +73,12 @@ public class MemberServiceV2ImplTest {
         MemberDTO memberTestDTO = of(memberTestEntity);
 
         /* given: BCryptPasswordEncoder 객체의 암호화 메소드 호출하면 암호화된 문자열 리턴*/
-        when(bCryptPasswordEncoderMock.encode("1234")).thenReturn(bCryptPasswordEncoder.encode("1234"));
-        when(bCryptPasswordEncoderMock.encode("111111-1111111")).thenReturn(bCryptPasswordEncoder.encode("111111-1111111"));
+        given(bCryptPasswordEncoderMock.encode("1234")).willReturn(bCryptPasswordEncoder.encode("1234"));
+        given(bCryptPasswordEncoderMock.encode("111111-1111111")).willReturn(bCryptPasswordEncoder.encode("111111-1111111"));
 
-        when(memberRepositoryMock.saveAndFlush(any(MemberEntityV2.class))).thenReturn(memberTestEntity);
+        given(memberRepositoryMock.saveAndFlush(any(MemberEntityV2.class))).willReturn(memberTestEntity);
 
-        // when
+        /* when: 유저 저장 메소드 호출 */
         memberServiceMock.saveUser(memberTestDTO);
 
         /*  then: 호출 메소드 확인
