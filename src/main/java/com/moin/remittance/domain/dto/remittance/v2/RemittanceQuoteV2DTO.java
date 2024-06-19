@@ -8,6 +8,7 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.Optional;
 
 import static com.moin.remittance.domain.vo.HttpResponseCode.BAD_NOT_MATCH_QUOTATION;
 
@@ -57,9 +58,10 @@ public class RemittanceQuoteV2DTO {
     }
 
     public static RemittanceQuoteV2DTO of (RemittanceQuoteEntityV2 entity) {
-        if(entity == null) {
+        if(Optional.ofNullable(entity).isEmpty()) {
             throw new NullPointerQuotationException(BAD_NOT_MATCH_QUOTATION);
         }
+
         return RemittanceQuoteV2DTO.builder()
                 .sourceAmount(entity.getSourceAmount())// 원화
                 .fee(new BigDecimal(String.valueOf(entity.getFee())))// 수수료
