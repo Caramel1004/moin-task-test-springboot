@@ -2,7 +2,7 @@ package com.moin.remittance.presentation.v2;
 
 import com.moin.remittance.application.v2.transfer.impl.RemittanceServiceImplV2;
 import com.moin.remittance.application.v2.transfer.impl.estimating.calculating.ExchangeRateCalculator;
-import com.moin.remittance.application.v2.transfer.impl.estimating.policy.RemittanceFeePolicy;
+import com.moin.remittance.application.v2.transfer.impl.estimating.policy.BasicFeePolicy;
 import com.moin.remittance.domain.dto.remittance.v2.RemittanceHistoryV2DTO;
 import com.moin.remittance.domain.dto.remittance.v2.RemittanceQuoteResponseV2DTO;
 import com.moin.remittance.domain.dto.remittance.v2.TransactionLogV2DTO;
@@ -73,7 +73,7 @@ public class RemittanceControllerV2Test {
 
     private RemittanceQuoteEntityV2 createQuotationTestCase(long sourceAmount, int currencyUnit, BigDecimal usdBasePrice, BigDecimal basePrice, String currencyCode) {
         ExchangeRateCalculator exchangeRateCalculator = new ExchangeRateCalculator();
-        RemittanceFeePolicy feePolicy = new RemittanceFeePolicy();
+        BasicFeePolicy feePolicy = new BasicFeePolicy();
 
         BigDecimal fee = feePolicy.calculateRemittanceFee(sourceAmount);
 

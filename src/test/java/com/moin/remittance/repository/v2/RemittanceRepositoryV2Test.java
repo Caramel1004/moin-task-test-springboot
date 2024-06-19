@@ -1,7 +1,7 @@
 package com.moin.remittance.repository.v2;
 
 import com.moin.remittance.application.v2.transfer.impl.estimating.calculating.ExchangeRateCalculator;
-import com.moin.remittance.application.v2.transfer.impl.estimating.policy.RemittanceFeePolicy;
+import com.moin.remittance.application.v2.transfer.impl.estimating.policy.BasicFeePolicy;
 import com.moin.remittance.domain.entity.remittance.v2.RemittanceQuoteEntityV2;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +34,7 @@ public class RemittanceRepositoryV2Test {
 
     private RemittanceQuoteEntityV2 createQuotationTestCase(long sourceAmount, int currencyUnit, BigDecimal usdBasePrice, BigDecimal basePrice, String currencyCode) {
         ExchangeRateCalculator exchangeRateCalculator = new ExchangeRateCalculator();
-        RemittanceFeePolicy feePolicy = new RemittanceFeePolicy();
+        BasicFeePolicy feePolicy = new BasicFeePolicy();
 
         BigDecimal fee = feePolicy.calculateRemittanceFee(sourceAmount);
 

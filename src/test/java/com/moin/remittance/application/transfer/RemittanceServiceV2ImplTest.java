@@ -4,7 +4,7 @@ import com.moin.remittance.application.v2.api.ExchangeRateApiClientV2;
 import com.moin.remittance.application.v2.transfer.impl.RemittanceServiceImplV2;
 import com.moin.remittance.application.v2.transfer.impl.estimating.Quotation;
 import com.moin.remittance.application.v2.transfer.impl.estimating.calculating.ExchangeRateCalculator;
-import com.moin.remittance.application.v2.transfer.impl.estimating.policy.RemittanceFeePolicy;
+import com.moin.remittance.application.v2.transfer.impl.estimating.policy.BasicFeePolicy;
 import com.moin.remittance.application.v2.transfer.impl.remitting.RemittancePolicyChecker;
 import com.moin.remittance.domain.dto.remittance.v2.*;
 import com.moin.remittance.domain.entity.remittance.v2.RemittanceLogEntityV2;
@@ -68,7 +68,7 @@ public class RemittanceServiceV2ImplTest {
 
     private RemittanceQuoteEntityV2 createQuotationTestCase(long sourceAmount, int currencyUnit, BigDecimal usdBasePrice, BigDecimal basePrice, String currencyCode) {
         ExchangeRateCalculator exchangeRateCalculator = new ExchangeRateCalculator();
-        RemittanceFeePolicy feePolicy = new RemittanceFeePolicy();
+        BasicFeePolicy feePolicy = new BasicFeePolicy();
 
         BigDecimal fee = feePolicy.calculateRemittanceFee(sourceAmount);
 
@@ -133,12 +133,17 @@ public class RemittanceServiceV2ImplTest {
     public void createQuotationTest() {
         /* given: 특정 송금 견적서 TestCase 생성*/
         RemittanceQuoteEntityV2 quotationTestEntity = createQuotationTestCase(
-                50000, 1, new BigDecimal("1362.50"), new BigDecimal("1362.50"), "USD"
+                50000,
+                1,
+                new BigDecimal("1362.50"),
+                new BigDecimal("1362.50"),
+                "USD"
         );
 
         RemittanceQuoteResponseV2DTO responseTestData = RemittanceQuoteResponseV2DTO.of(quotationTestEntity);
 
-        given(webClientMock.fetchExchangeRateInfoFromExternalAPI("FRX.KRWUSD")).willReturn(new HashMap<String, ExchangeRateInfoDTO>());
+        given(webClientMock.fetchExchangeRateInfoFromExternalAPI("FRX.KRWUSD"))
+                .willReturn(new HashMap<String, ExchangeRateInfoDTO>());
 
         given(quotationMock.createQuotation(
                 anyLong(), any(), any(), anyString())

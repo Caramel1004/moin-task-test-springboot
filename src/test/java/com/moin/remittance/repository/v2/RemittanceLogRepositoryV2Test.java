@@ -1,9 +1,8 @@
 package com.moin.remittance.repository.v2;
 
 import com.moin.remittance.application.v2.transfer.impl.estimating.calculating.ExchangeRateCalculator;
-import com.moin.remittance.application.v2.transfer.impl.estimating.policy.RemittanceFeePolicy;
+import com.moin.remittance.application.v2.transfer.impl.estimating.policy.BasicFeePolicy;
 import com.moin.remittance.domain.entity.remittance.v2.RemittanceLogEntityV2;
-import com.moin.remittance.domain.entity.remittance.v2.RemittanceQuoteEntityV2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -35,7 +33,7 @@ public class RemittanceLogRepositoryV2Test {
             long sourceAmount, int currencyUnit, BigDecimal usdBasePrice, BigDecimal basePrice, String currencyCode, String userId
     ) {
         ExchangeRateCalculator exchangeRateCalculator = new ExchangeRateCalculator();
-        RemittanceFeePolicy feePolicy = new RemittanceFeePolicy();
+        BasicFeePolicy feePolicy = new BasicFeePolicy();
 
         BigDecimal fee = feePolicy.calculateRemittanceFee(sourceAmount);
 
