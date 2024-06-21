@@ -2,7 +2,8 @@ package com.moin.remittance.application.transfer;
 
 import com.moin.remittance.application.v2.api.ExchangeRateApiClientV2;
 import com.moin.remittance.application.v2.transfer.impl.RemittanceServiceImplV2;
-import com.moin.remittance.application.v2.transfer.impl.estimating.Quotation;
+import com.moin.remittance.application.v2.transfer.impl.estimating.QuotationFactory;
+import com.moin.remittance.application.v2.transfer.impl.estimating.RemittanceQuotation;
 import com.moin.remittance.application.v2.transfer.impl.estimating.calculating.ExchangeRateCalculator;
 import com.moin.remittance.application.v2.transfer.impl.estimating.policy.BasicFeePolicy;
 import com.moin.remittance.application.v2.transfer.impl.remitting.RemittancePolicyChecker;
@@ -57,7 +58,7 @@ public class RemittanceServiceV2ImplTest {
     private ExchangeRateApiClientV2 webClientMock;
 
     @Mock
-    private Quotation quotationMock;
+    private QuotationFactory quotationFactoryMock;
 
     @Mock
     private RemittancePolicyChecker policyCheckerMock;
@@ -123,7 +124,7 @@ public class RemittanceServiceV2ImplTest {
         assertNotNull(remittanceServiceMock);
         assertNotNull(remittanceRepositoryMock);
         assertNotNull(webClientMock);
-        assertNotNull(quotationMock);
+        assertNotNull(quotationFactoryMock);
         assertNotNull(policyCheckerMock);
         assertNotNull(modelMapper);
     }
@@ -145,7 +146,7 @@ public class RemittanceServiceV2ImplTest {
         given(webClientMock.fetchExchangeRateInfoFromExternalAPI("FRX.KRWUSD"))
                 .willReturn(new HashMap<String, ExchangeRateInfoDTO>());
 
-        given(quotationMock.createQuotation(
+        given(quotationFactoryMock.createQuotation(
                 anyLong(), any(), any(), anyString())
         ).willReturn(quotationTestEntity);
 
@@ -171,7 +172,7 @@ public class RemittanceServiceV2ImplTest {
          *   -> 송금견적서 저장 메소드 호출
          * */
         verify(webClientMock).fetchExchangeRateInfoFromExternalAPI(any());
-        verify(quotationMock).createQuotation(anyLong(), any(), any(), anyString());
+        verify(quotationFactoryMock).createQuotation(anyLong(), any(), any(), anyString());
         verify(remittanceRepositoryMock).saveAndFlush(any(RemittanceQuoteEntityV2.class));
     }
 
