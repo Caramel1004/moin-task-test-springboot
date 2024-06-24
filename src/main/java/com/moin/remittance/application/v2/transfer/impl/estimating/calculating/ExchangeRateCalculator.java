@@ -19,15 +19,6 @@ public class ExchangeRateCalculator {
         int decimalPlaces = Currency.getInstance(currencyCode).getDefaultFractionDigits();
 
         // 자릿수 getDefaultFractionDigits
-        BigDecimal targetAmount = krw.divide(targetCurrencyToKrwExchangeRate, decimalPlaces, RoundingMode.HALF_UP);
-
-        /*
-        * 송금액이 0이거나 음수면 NegativeNumberException 발생
-        * */
-        if (targetAmount.compareTo(new BigDecimal(0)) <= 0) {
-            throw new NegativeNumberException(BAD_NEGATIVE_TARGET_AMOUNT);
-        }
-
-        return targetAmount;
+        return krw.divide(targetCurrencyToKrwExchangeRate, decimalPlaces, RoundingMode.HALF_UP);
     }
 }
